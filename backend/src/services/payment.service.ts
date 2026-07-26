@@ -2,12 +2,13 @@ import Razorpay from 'razorpay';
 import Stripe from 'stripe';
 import crypto from 'crypto';
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_SECRET!,
-});
+const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_T4jYhLKhRcdUW5';
+const key_secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET || '50GMvtOgHlUtktz97AkTtxtW';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET!, { apiVersion: '2024-04-10' });
+const razorpay = new Razorpay({ key_id, key_secret });
+
+const stripeSecret = process.env.STRIPE_SECRET || 'sk_test_mock';
+const stripe = new Stripe(stripeSecret, { apiVersion: '2024-04-10' as any });
 
 export const createRazorpayOrder = async (amount: number, receipt: string) => {
   return razorpay.orders.create({
@@ -20,7 +21,7 @@ export const createRazorpayOrder = async (amount: number, receipt: string) => {
 
 export const verifyRazorpaySignature = (orderId: string, paymentId: string, signature: string): boolean => {
   const expected = crypto
-    .createHmac('sha256', process.env.RAZORPAY_SECRET!)
+    .createHmac('sha256', key_secret)
     .update(`${orderId}|${paymentId}`)
     .digest('hex');
   return expected === signature;

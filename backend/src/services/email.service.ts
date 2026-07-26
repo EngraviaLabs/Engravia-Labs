@@ -31,7 +31,15 @@ const baseTemplate = (content: string) => `
 </div></body></html>`;
 
 const sendMail = async (to: string, subject: string, html: string) => {
-  await transporter.sendMail({ from: `"Engravia Labs" <${process.env.SMTP_USER}>`, to, subject, html });
+  try {
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      await transporter.sendMail({ from: `"Engravia Labs" <${process.env.SMTP_USER}>`, to, subject, html });
+    } else {
+      console.log(`[EmailService Notice] SMTP not configured. Mail to ${to} skipped. Subject: ${subject}`);
+    }
+  } catch (err: any) {
+    console.warn(`[EmailService Warning] Failed to send email to ${to}:`, err.message || err);
+  }
 };
 
 const emailService = {

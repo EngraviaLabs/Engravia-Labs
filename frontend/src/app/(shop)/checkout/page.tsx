@@ -24,6 +24,17 @@ export default function CheckoutPage() {
     setAddress(a => ({ ...a, [e.target.name]: e.target.value }));
   };
 
+  const loadRazorpayScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if ((window as any).Razorpay) return resolve(true);
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const placeOrder = async () => {
     if (!items.length) return;
     setLoading(true);
@@ -39,24 +50,54 @@ export default function CheckoutPage() {
       const order = data.order;
 
       if (paymentMethod === 'razorpay') {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          toast.error('Failed to load Razorpay payment gateway. Please check your network connection.');
+          return;
+        }
+
         const { data: rzp } = await api.post('/payments/razorpay/create', { orderId: order._id });
         const options = {
-          key: rzp.key,
+          key: rzp.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_T4jYhLKhRcdUW5',
           amount: rzp.amount,
-          currency: rzp.currency,
+          currency: rzp.currency || 'INR',
           name: 'ENGRAVIA LABS',
           description: `Order #${order.orderNumber}`,
-          order_id: rzp.razorpayOrderId,
+          image: '/images/logo.jpg',
+          order_id: rzp.order_id || rzp.razorpayOrderId,
           handler: async (response: any) => {
-            await api.post('/payments/razorpay/verify', { orderId: order._id, ...response });
-            clear();
-            toast.success('Payment successful! Order confirmed.');
-            router.push(`/account/orders/${order._id}`);
+            try {
+              toast.loading('Verifying payment signature...', { id: 'rzp-verify' });
+              await api.post('/payments/razorpay/verify', {
+                orderId: order._id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              });
+              toast.success('Payment verified & order confirmed! 🎉', { id: 'rzp-verify' });
+              clear();
+              router.push(`/account/orders/${order._id}?payment=success`);
+            } catch (err: any) {
+              toast.error(err.response?.data?.message || 'Payment verification failed. Please contact support.', { id: 'rzp-verify' });
+            }
           },
-          prefill: { name: address.fullName, contact: address.phone, email: user?.email || '' },
+          modal: {
+            ondismiss: () => {
+              toast.error('Payment checkout cancelled. You can retry payment anytime from your order details.');
+            }
+          },
+          prefill: {
+            name: address.fullName,
+            contact: address.phone,
+            email: user?.email || '',
+          },
           theme: { color: '#D4AF37' },
         };
+
         const rzpInstance = new (window as any).Razorpay(options);
+        rzpInstance.on('payment.failed', function (resp: any) {
+          toast.error(`Payment failed: ${resp.error?.description || 'Transaction unsuccessful'}`);
+        });
         rzpInstance.open();
       } else if (paymentMethod === 'cod') {
         clear();
