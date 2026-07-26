@@ -1,0 +1,23 @@
+{
+  "name": "engravia-labs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ENGRAVIA LABS – India's Premier Luxury Stone Engraving Studio",
+  "scripts": {
+    "dev": "node start-engravia.js",
+    "build": "cd frontend && npm install && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build:admin": "cd admin && npm run build",
+    "build:backend": "cd backend && npm run build"
+  },
+  "keywords": [
+    "engravia-labs",
+    "luxury",
+    "stone-engraving",
+    "black-marble",
+    "nextjs",
+    "vercel"
+  ],
+  "author": "Engravia Labs",
+  "license": "ISC"
+}
