@@ -3,21 +3,27 @@
   "version": "1.0.0",
   "private": true,
   "description": "ENGRAVIA LABS – India's Premier Luxury Stone Engraving Studio",
+  "workspaces": [
+    "frontend",
+    "admin",
+    "backend"
+  ],
   "scripts": {
     "dev": "node start-engravia.js",
     "build": "cd frontend && npm install && npm run build",
+    "start": "cd frontend && npm run start",
     "build:frontend": "cd frontend && npm run build",
     "build:admin": "cd admin && npm run build",
     "build:backend": "cd backend && npm run build"
   },
-  "keywords": [
-    "engravia-labs",
-    "luxury",
-    "stone-engraving",
-    "black-marble",
-    "nextjs",
-    "vercel"
-  ],
-  "author": "Engravia Labs",
-  "license": "ISC"
+  "dependencies": {
+    "next": "14.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.5"
+  }
 }
