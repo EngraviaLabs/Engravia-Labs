@@ -7,6 +7,8 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
+import ImageZoom from '../../../../components/common/ImageZoom';
+
 export default function ProductPageClient({ slug }: { slug: string }) {
   const { data: product, isLoading } = useProduct(slug);
   const { data: reviewData } = useProductReviews(product?._id || '');
@@ -62,7 +64,7 @@ export default function ProductPageClient({ slug }: { slug: string }) {
         <div className="space-y-4">
           <div className="relative aspect-square bg-[#111] overflow-hidden border border-[rgba(212,175,55,0.1)]">
             {product.images?.[activeImg] ? (
-              <Image src={product.images[activeImg].url} alt={product.name} fill className="object-cover" sizes="50vw" priority />
+              <ImageZoom src={product.images[activeImg].url} alt={product.name} className="w-full h-full" />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <div className="border border-[rgba(212,175,55,0.2)] p-12 text-center">
