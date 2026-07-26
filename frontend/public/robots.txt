@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /account/
+Disallow: /auth/
+Disallow: /api/
+
+Sitemap: https://engravialabs.com/sitemap.xml

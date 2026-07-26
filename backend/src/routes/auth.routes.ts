@@ -1,0 +1,20 @@
+import { Router } from 'express';
+import { register, verifyOTP, resendOTP, login, refreshToken, forgotPassword, resetPassword, getMe, changePassword, updateProfile, addAddress, updateAddress, deleteAddress } from '../controllers/auth.controller';
+import { protect } from '../middleware/auth.middleware';
+import { uploadAvatarImage } from '../middleware/upload.middleware';
+
+const router = Router();
+router.post('/register', register);
+router.post('/verify-otp', verifyOTP);
+router.post('/resend-otp', resendOTP);
+router.post('/login', login);
+router.post('/refresh-token', refreshToken);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
+router.get('/me', protect, getMe);
+router.put('/change-password', protect, changePassword);
+router.put('/profile', protect, uploadAvatarImage.single('avatar'), updateProfile);
+router.post('/addresses', protect, addAddress);
+router.put('/addresses/:addressId', protect, updateAddress);
+router.delete('/addresses/:addressId', protect, deleteAddress);
+export default router;

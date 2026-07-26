@@ -1,0 +1,16 @@
+{
+  "name": "engravia-labs-database",
+  "version": "1.0.0",
+  "description": "MongoDB Atlas seed data for ENGRAVIA LABS",
+  "main": "seed.js",
+  "scripts": {
+    "seed": "node seed.js",
+    "seed:fresh": "node seed.js --fresh",
+    "drop": "node scripts/drop.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.1"
+  }
+}

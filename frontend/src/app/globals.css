@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #D4AF37;
+  --light-gold: #F5E6A3;
+  --black: #0D0D0D;
+  --black-2: #1A1A1A;
+  --font-cinzel: 'Cinzel', serif;
+  --font-poppins: 'Poppins', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body { background: var(--black); color: #fff; font-family: var(--font-poppins); }
+
+.font-cinzel { font-family: var(--font-cinzel); }
+.font-poppins { font-family: var(--font-poppins); }
+
+.text-gold { color: var(--gold); }
+.bg-gold { background: var(--gold); }
+.border-gold { border-color: var(--gold); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Gold divider */
+.gold-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+
+/* Luxury button */
+.btn-luxury { background: var(--gold); color: #0D0D0D; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 12px; padding: 14px 32px; transition: all 0.25s; border: none; cursor: pointer; border-radius: 8px; }
+.btn-luxury:hover { background: var(--light-gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(212,175,55,0.3); }
+.btn-outline-luxury { background: transparent; color: var(--gold); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 12px; padding: 13px 32px; border: 1px solid rgba(212,175,55,0.5); cursor: pointer; transition: all 0.25s; border-radius: 8px; }
+.btn-outline-luxury:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); transform: translateY(-2px); }
+
+/* Animations */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+.animate-fadeInUp { animation: fadeInUp 0.5s ease forwards; }
+.skeleton { background: linear-gradient(90deg, #1A1A1A 25%, #252525 50%, #1A1A1A 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }

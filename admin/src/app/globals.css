@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #D4AF37;
+  --light-gold: #F5E6A3;
+  --black: #0D0D0D;
+  --black-2: #1A1A1A;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--black); color: #fff; font-family: var(--font-poppins), sans-serif; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+.font-cinzel { font-family: var(--font-cinzel), serif; }
+
+.btn-luxury { background: var(--gold); color: #0D0D0D; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 12px; padding: 12px 28px; transition: all 0.2s; border: none; cursor: pointer; }
+.btn-luxury:hover { background: var(--light-gold); }
+.btn-luxury:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-outline { background: transparent; color: var(--gold); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; font-size: 11px; padding: 10px 24px; border: 1px solid rgba(212,175,55,0.4); cursor: pointer; transition: all 0.2s; }
+.btn-outline:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+
+.btn-danger { background: transparent; color: #f87171; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 11px; padding: 10px 20px; border: 1px solid rgba(248,113,113,0.3); cursor: pointer; transition: all 0.2s; }
+.btn-danger:hover { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.5); }
+
+.input-field { width: 100%; background: #0D0D0D; border: 1px solid rgba(212,175,55,0.2); color: white; padding: 10px 14px; font-size: 13px; outline: none; transition: border-color 0.2s; }
+.input-field:focus { border-color: var(--gold); }
+.input-field::placeholder { color: rgba(255,255,255,0.25); }
+
+.label-field { display: block; font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.skeleton { background: linear-gradient(90deg, #1A1A1A 25%, #252525 50%, #1A1A1A 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
