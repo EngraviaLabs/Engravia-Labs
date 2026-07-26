@@ -5,10 +5,18 @@ import Footer from '../../components/layout/Footer';
 import api from '../../lib/api';
 import toast from 'react-hot-toast';
 
+import { useSettings } from '../../hooks/useSettings';
+
 export default function ContactPage() {
+  const { data: settings } = useSettings();
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+
+  const phone = settings?.contact_phone || '+91 98765 43210';
+  const email = settings?.contact_email || 'hello@engravialabs.com';
+  const address = settings?.address || 'Makrana Road, Kishangarh, Rajasthan 305801';
+  const whatsapp = settings?.whatsapp_number || '919876543210';
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -63,23 +71,23 @@ export default function ContactPage() {
               <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-6">
                 <div className="text-[#D4AF37] text-xl mb-3">📍</div>
                 <div className="font-cinzel text-[14px] font-semibold text-white mb-2">Workshop Address</div>
-                <div className="text-[13px] text-[rgba(255,255,255,0.55)] leading-relaxed">
-                  Engravia Labs Studio<br />Makrana Road, Kishangarh<br />Rajasthan 305801, India
+                <div className="text-[13px] text-[rgba(255,255,255,0.55)] leading-relaxed whitespace-pre-line">
+                  {address}
                 </div>
               </div>
               <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-6">
                 <div className="text-[#D4AF37] text-xl mb-3">📞</div>
                 <div className="font-cinzel text-[14px] font-semibold text-white mb-2">Call Us</div>
-                <div className="text-[13px] text-[rgba(255,255,255,0.55)]">+91 98765 43210</div>
+                <div className="text-[13px] text-[rgba(255,255,255,0.55)]">{phone}</div>
                 <div className="text-[11px] text-[rgba(255,255,255,0.35)] mt-1">Mon–Sat, 9:00 AM – 6:00 PM IST</div>
               </div>
               <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-6">
                 <div className="text-[#D4AF37] text-xl mb-3">✉️</div>
                 <div className="font-cinzel text-[14px] font-semibold text-white mb-2">Email Us</div>
-                <div className="text-[13px] text-[rgba(255,255,255,0.55)]">hello@engravialabs.com</div>
+                <div className="text-[13px] text-[rgba(255,255,255,0.55)]">{email}</div>
                 <div className="text-[11px] text-[rgba(255,255,255,0.35)] mt-1">We reply within 24 hours</div>
               </div>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="block bg-[#D4AF37] p-6 hover:bg-[#F5E6A3] transition-colors">
+              <a href={`https://wa.me/${whatsapp.replace(/[^0-9]/g,'')}`} target="_blank" rel="noreferrer" className="block bg-[#D4AF37] p-6 hover:bg-[#F5E6A3] transition-colors">
                 <div className="text-[#0D0D0D] text-xl mb-3">💬</div>
                 <div className="font-cinzel text-[14px] font-semibold text-[#0D0D0D] mb-2">Chat on WhatsApp</div>
                 <div className="text-[13px] text-[rgba(13,13,13,0.7)]">Fastest way to reach us</div>
