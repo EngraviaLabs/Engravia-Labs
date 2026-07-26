@@ -105,28 +105,34 @@ export default function ProductPageClient({ slug }: { slug: string }) {
           {product.customizationFields?.length > 0 && (
             <div className="mb-6 space-y-4">
               <div className="font-cinzel text-[13px] font-semibold text-[#D4AF37] tracking-[2px] uppercase">Customization</div>
-              {product.customizationFields.map((field: any) => (
-                <div key={field.name}>
-                  <label className="block text-[11px] text-[rgba(255,255,255,0.6)] tracking-widest uppercase mb-2">
-                    {field.label}{field.required && <span className="text-[#D4AF37] ml-1">*</span>}
-                  </label>
-                  {field.type === 'select' ? (
-                    <select value={customization[field.name]||''} onChange={e=>setCustomization(c=>({...c,[field.name]:e.target.value}))}
-                      className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37]">
-                      <option value="">Select {field.label}</option>
-                      {field.options?.map((o:string)=><option key={o} value={o}>{o}</option>)}
-                    </select>
-                  ) : field.type === 'textarea' ? (
-                    <textarea value={customization[field.name]||''} onChange={e=>setCustomization(c=>({...c,[field.name]:e.target.value}))}
-                      placeholder={field.placeholder} maxLength={field.maxLength}
-                      className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37] resize-none h-24" />
-                  ) : (
-                    <input type={field.type==='number'?'number':'text'} value={customization[field.name]||''} onChange={e=>setCustomization(c=>({...c,[field.name]:e.target.value}))}
-                      placeholder={field.placeholder} maxLength={field.maxLength}
-                      className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37]" />
-                  )}
-                </div>
-              ))}
+              {product.customizationFields.map((field: any, idx: number) => {
+                const fieldKey = field.name && !product.customizationFields.some((f: any, i: number) => i !== idx && f.name === field.name)
+                  ? field.name
+                  : `${field.name || 'field'}_${idx}`;
+
+                return (
+                  <div key={fieldKey}>
+                    <label className="block text-[11px] text-[rgba(255,255,255,0.6)] tracking-widest uppercase mb-2">
+                      {field.label}{field.required && <span className="text-[#D4AF37] ml-1">*</span>}
+                    </label>
+                    {field.type === 'select' ? (
+                      <select value={customization[fieldKey]||''} onChange={e=>setCustomization(c=>({...c,[fieldKey]:e.target.value}))}
+                        className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37]">
+                        <option value="">Select {field.label}</option>
+                        {field.options?.map((o:string)=><option key={o} value={o}>{o}</option>)}
+                      </select>
+                    ) : field.type === 'textarea' ? (
+                      <textarea value={customization[fieldKey]||''} onChange={e=>setCustomization(c=>({...c,[fieldKey]:e.target.value}))}
+                        placeholder={field.placeholder} maxLength={field.maxLength}
+                        className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37] resize-none h-24" />
+                    ) : (
+                      <input type={field.type==='number'?'number':'text'} value={customization[fieldKey]||''} onChange={e=>setCustomization(c=>({...c,[fieldKey]:e.target.value}))}
+                        placeholder={field.placeholder} maxLength={field.maxLength}
+                        className="w-full bg-[#111] border border-[rgba(212,175,55,0.2)] text-white px-4 py-3 text-[13px] outline-none focus:border-[#D4AF37]" />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 

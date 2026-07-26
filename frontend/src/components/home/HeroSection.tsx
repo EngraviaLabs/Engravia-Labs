@@ -26,9 +26,9 @@ export default function HeroSection({ banner }: { banner?: any }) {
             {title.split('\n')[0]}<br />{title.split('\n')[1]?.split(' ').map((w: string, i: number) => i === (title.split('\n')[1].split(' ').length-1) ? <span key={i} className="text-[#D4AF37]"> {w}</span> : (i===0?w:' '+w))}
           </h1>
           <p className="text-[15px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-10 max-w-[480px]">{subtitle}</p>
-          <div className="flex flex-wrap gap-4 mb-14">
-            <Link href="/collection" className="btn-luxury">Shop Collection</Link>
-            <Link href="/custom-order" className="btn-outline-luxury">Custom Order</Link>
+          <div className="flex flex-wrap gap-4 mb-14 relative z-20">
+            <Link href="/collection" className="btn-luxury inline-block cursor-pointer">Shop Collection</Link>
+            <Link href="/custom-order" className="btn-outline-luxury inline-block cursor-pointer">Custom Order</Link>
           </div>
           {/* Stats */}
           <div className="grid grid-cols-4 gap-6 pt-10 border-t border-[rgba(212,175,55,0.12)]">

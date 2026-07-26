@@ -2,8 +2,15 @@ import Razorpay from 'razorpay';
 import Stripe from 'stripe';
 import crypto from 'crypto';
 
-const key_id = process.env.RAZORPAY_KEY_ID || 'rzp_test_T4jYhLKhRcdUW5';
-const key_secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET || '50GMvtOgHlUtktz97AkTtxtW';
+const key_id = (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_ID !== 'rzp_test_placeholder')
+  ? process.env.RAZORPAY_KEY_ID
+  : 'rzp_test_T4jYhLKhRcdUW5';
+
+const key_secret = (process.env.RAZORPAY_KEY_SECRET && process.env.RAZORPAY_KEY_SECRET !== 'razorpay_secret_placeholder')
+  ? process.env.RAZORPAY_KEY_SECRET
+  : (process.env.RAZORPAY_SECRET && process.env.RAZORPAY_SECRET !== 'razorpay_secret_placeholder')
+    ? process.env.RAZORPAY_SECRET
+    : '50GMvtOgHlUtktz97AkTtxtW';
 
 const razorpay = new Razorpay({ key_id, key_secret });
 
