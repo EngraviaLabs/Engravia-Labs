@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: engravia-labs-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        value: engravia-super-secret-jwt-key-2025-very-long-string
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: JWT_REFRESH_SECRET
+        value: engravia-refresh-secret-key-2025-different-string
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 30d
