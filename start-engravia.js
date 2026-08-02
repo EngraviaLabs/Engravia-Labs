@@ -1,4 +1,4 @@
-const { MongoMemoryServer } = require('./backend/node_modules/mongodb-memory-server');
+const { MongoMemoryServer } = require('./.tools/node_modules/mongodb-memory-server');
 const { spawn, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -13,17 +13,42 @@ async function run() {
 
   // 1. Start MongoDB
   const dbPath = path.join(__dirname, '.tools', 'db');
-  if (!fs.existsSync(dbPath)) fs.mkdirSync(dbPath, { recursive: true });
+  if (fs.existsSync(dbPath)) {
+    try {
+      const lockFile = path.join(dbPath, 'mongod.lock');
+      if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile);
+      const wtLock = path.join(dbPath, 'WiredTiger.lock');
+      if (fs.existsSync(wtLock)) fs.unlinkSync(wtLock);
+    } catch (e) {
+      console.log('Lock cleanup note:', e.message);
+    }
+  } else {
+    fs.mkdirSync(dbPath, { recursive: true });
+  }
 
   console.log('📦 [1/4] Starting local MongoDB database on port 27017...');
-  const mongod = await MongoMemoryServer.create({
-    instance: {
-      port: 27017,
-      dbName: 'engravia_labs',
-      dbPath: dbPath,
-      storageEngine: 'wiredTiger',
-    },
-  });
+  let mongod;
+  try {
+    mongod = await MongoMemoryServer.create({
+      instance: {
+        port: 27017,
+        dbName: 'engravia_labs',
+        dbPath: dbPath,
+        storageEngine: 'wiredTiger',
+      },
+    });
+  } catch (err) {
+    console.log('Retrying MongoDB startup with clean db directory...');
+    fs.rmSync(dbPath, { recursive: true, force: true });
+    fs.mkdirSync(dbPath, { recursive: true });
+    mongod = await MongoMemoryServer.create({
+      instance: {
+        port: 27017,
+        dbName: 'engravia_labs',
+        dbPath: dbPath,
+      },
+    });
+  }
   console.log('✅ Local MongoDB is running on mongodb://127.0.0.1:27017/engravia_labs\n');
 
   // 2. Seed database
@@ -63,9 +88,10 @@ async function run() {
   };
 
   // Start Backend, Admin, and Frontend
-  runService('Backend API', path.join(__dirname, 'backend'), 'npm', ['run', 'dev']);
-  runService('Admin Panel', path.join(__dirname, 'admin'), 'npm', ['run', 'dev']);
-  runService('Customer Store', path.join(__dirname, 'frontend'), 'npm', ['run', 'dev']);
+  const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  runService('Backend API', path.join(__dirname, 'backend'), npmCmd, ['run', 'dev']);
+  runService('Admin Panel', path.join(__dirname, 'admin'), npmCmd, ['run', 'dev']);
+  runService('Customer Store', path.join(__dirname, 'frontend'), npmCmd, ['run', 'dev']);
 
   console.log('================================================');
   console.log('🎉 ALL SERVICES ARE RUNNING!');
@@ -77,6 +103,18 @@ async function run() {
   console.log('   Email:    admin@engravialabs.com');
   console.log('   Password: Admin@12345');
   console.log('================================================\n');
+
+  // Handle process cleanup
+  const cleanup = async () => {
+    console.log('\nShutting down local dev environment...');
+    if (mongod) await mongod.stop();
+    process.exit(0);
+  };
+  process.on('SIGINT', cleanup);
+  process.on('SIGTERM', cleanup);
+
+  // Keep process alive indefinitely so MongoMemoryServer stays running
+  await new Promise(() => {});
 }
 
 run().catch(err => {
