@@ -22,6 +22,5 @@ const couponSchema = new Schema<ICoupon>({
   expiresAt: { type: Date, required: true },
   usedBy: [{ user: { type: Schema.Types.ObjectId, ref: 'User' }, usedAt: { type: Date, default: Date.now }, orderId: { type: Schema.Types.ObjectId, ref: 'Order' } }],
 }, { timestamps: true });
-couponSchema.index({ code: 1 });
 couponSchema.index({ isActive: 1, expiresAt: 1 });
 export default mongoose.model<ICoupon>('Coupon', couponSchema);

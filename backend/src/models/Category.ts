@@ -21,7 +21,6 @@ const categorySchema = new Schema<ICategory>({
   seo: { metaTitle: String, metaDescription: String, keywords: [String], ogImage: String },
 }, { timestamps: true });
 
-categorySchema.index({ slug: 1 });
 categorySchema.index({ parent: 1, isVisible: 1, displayOrder: 1 });
 
 export default mongoose.model<ICategory>('Category', categorySchema);

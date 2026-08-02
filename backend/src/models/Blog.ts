@@ -22,6 +22,5 @@ const blogSchema = new Schema<IBlog>({
   viewCount: { type: Number, default: 0 },
   seo: { metaTitle: String, metaDescription: String, keywords: [String], ogImage: String, canonicalUrl: String },
 }, { timestamps: true });
-blogSchema.index({ slug: 1 });
 blogSchema.index({ status: 1, publishedAt: -1 });
 export default mongoose.model<IBlog>('Blog', blogSchema);

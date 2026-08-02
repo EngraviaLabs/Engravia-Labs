@@ -12,6 +12,5 @@ const settingSchema = new Schema<ISetting>({
   label: { type: String, required: true },
   type: { type: String, enum: ['string','number','boolean','json','array'], default: 'string' },
 }, { timestamps: true });
-settingSchema.index({ key: 1 });
 settingSchema.index({ group: 1 });
 export default mongoose.model<ISetting>('Setting', settingSchema);
