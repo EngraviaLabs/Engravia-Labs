@@ -92,7 +92,25 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const { email, password } = req.body;
     if (!email || !password) return next(new AppError('Email and password are required.', 400));
     const cleanEmail = String(email).trim().toLowerCase();
-    const user = await User.findOne({ email: cleanEmail, isActive: true }).select('+password');
+    let user = await User.findOne({ email: cleanEmail, isActive: true }).select('+password');
+
+    // Auto-create initial super admin if no super admin exists in DB and logging in with default credentials
+    if (!user && cleanEmail === 'admin@engravialabs.com') {
+      const superAdminCount = await User.countDocuments({ role: 'super_admin' });
+      if (superAdminCount === 0) {
+        const newAdmin = await User.create({
+          name: 'Engravia Admin',
+          email: 'admin@engravialabs.com',
+          phone: '+91 98765 43210',
+          password,
+          role: 'super_admin',
+          isVerified: true,
+          isActive: true
+        });
+        user = (await User.findById(newAdmin._id).select('+password')) as any;
+      }
+    }
+
     if (!user || !user.password || !(await user.comparePassword(password))) {
       return next(new AppError('Invalid email or password.', 401));
     }

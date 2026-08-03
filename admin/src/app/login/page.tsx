@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { setUser, hydrate, user, isLoading } = useAuthStore();
@@ -17,10 +18,12 @@ export default function AdminLoginPage() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg('');
     setLoading(true);
     try {
       const { data } = await api.post('/auth/login', { email, password });
-      if (!['admin', 'super_admin'].includes(data.user.role)) {
+      if (!['admin', 'super_admin'].includes(data.user?.role)) {
+        setErrorMsg('This account does not have admin access.');
         toast.error('This account does not have admin access.');
         setLoading(false);
         return;
@@ -31,7 +34,9 @@ export default function AdminLoginPage() {
       toast.success(`Welcome back, ${data.user.name}`);
       window.location.href = '/';
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      const msg = err.response?.data?.message || err.message || 'Login failed. Please check your credentials and server connection.';
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally { setLoading(false); }
   };
 
@@ -44,6 +49,11 @@ export default function AdminLoginPage() {
           <div className="text-[11px] text-[rgba(255,255,255,0.4)] tracking-[3px] uppercase mt-2">Admin Console</div>
         </div>
         <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.15)] p-8">
+          {errorMsg && (
+            <div className="mb-5 p-3.5 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded leading-relaxed">
+              ⚠️ {errorMsg}
+            </div>
+          )}
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
               <label className="label-field">Admin Email</label>
