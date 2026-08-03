@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
       localStorage.setItem('admin_refreshToken', data.refreshToken);
       setUser(data.user);
       toast.success(`Welcome back, ${data.user.name}`);
-      router.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Login failed');
     } finally { setLoading(false); }
@@ -47,11 +47,11 @@ export default function AdminLoginPage() {
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
               <label className="label-field">Admin Email</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="input-field" placeholder="admin@engravialabs.com" required />
+              <input type="email" autoComplete="username" value={email} onChange={e => setEmail(e.target.value)} className="input-field" placeholder="admin@engravialabs.com" required />
             </div>
             <div>
               <label className="label-field">Password</label>
-              <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="input-field" placeholder="••••••••" required />
+              <input type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} className="input-field" placeholder="••••••••" required />
             </div>
             <button type="submit" disabled={loading} className="btn-luxury w-full py-3.5">
               {loading ? 'Signing in...' : 'Sign In to Dashboard'}

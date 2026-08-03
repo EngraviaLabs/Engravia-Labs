@@ -5,17 +5,20 @@ import { AppError } from '../middleware/error.middleware';
 import { AuthRequest } from '../middleware/auth.middleware';
 import emailService from '../services/email.service';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'engravia-super-secret-jwt-key-2025-very-long-string';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'engravia-refresh-secret-key-2025-different-string';
+
 const signAccess = (id: string, role: string, email: string) =>
-  jwt.sign({ id, role, email }, process.env.JWT_SECRET!, { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any });
+  jwt.sign({ id, role, email }, JWT_SECRET, { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any });
 
 const signRefresh = (id: string) =>
-  jwt.sign({ id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '30d' });
+  jwt.sign({ id }, JWT_REFRESH_SECRET, { expiresIn: '30d' });
 
 const sendTokens = (res: Response, user: any, statusCode = 200) =>
   res.status(statusCode).json({
     success: true,
-    accessToken: signAccess(user._id, user.role, user.email),
-    refreshToken: signRefresh(user._id),
+    accessToken: signAccess(user._id.toString(), user.role, user.email),
+    refreshToken: signRefresh(user._id.toString()),
     user: { id: user._id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified, avatar: user.avatar },
   });
 
@@ -90,8 +93,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     if (!email || !password) return next(new AppError('Email and password are required.', 400));
     const cleanEmail = String(email).trim().toLowerCase();
     const user = await User.findOne({ email: cleanEmail, isActive: true }).select('+password');
-    if (!user || !(await user.comparePassword(password)))
+    if (!user || !user.password || !(await user.comparePassword(password))) {
       return next(new AppError('Invalid email or password.', 401));
+    }
     if (!user.isVerified) {
       user.isVerified = true;
     }
