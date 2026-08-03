@@ -40,12 +40,16 @@ export default function Navbar() {
             className="h-10 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300" 
           />
           <div className="flex flex-col">
-            <span className="font-cinzel text-[17px] font-bold tracking-[3.5px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors">
+            <span className="font-cinzel text-[17px] font-bold tracking-[3px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors">
               ENGRAVIA <span className="text-white">LABS</span>
             </span>
-            <span className="text-[8px] tracking-[2.5px] text-[rgba(255,255,255,0.45)] uppercase mt-1 font-medium hidden sm:block">
-              Precision · Permanence · Art
-            </span>
+            <div className="w-full flex justify-between items-center text-[7.5px] font-medium text-[rgba(255,255,255,0.5)] uppercase mt-1 hidden sm:flex select-none">
+              <span>PRECISION</span>
+              <span className="text-[#D4AF37]/50 text-[6px]">•</span>
+              <span>PERMANENCE</span>
+              <span className="text-[#D4AF37]/50 text-[6px]">•</span>
+              <span>ART</span>
+            </div>
           </div>
         </Link>
 

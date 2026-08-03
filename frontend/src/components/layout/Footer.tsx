@@ -23,7 +23,13 @@ export default function Footer() {
               <img src="/images/logo-emblem.png" alt="Engravia Labs Logo" className="h-10 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-all" />
               <div className="flex flex-col">
                 <span className="font-cinzel text-lg font-bold text-[#D4AF37] tracking-[3px] leading-none">ENGRAVIA LABS</span>
-                <span className="text-[8px] tracking-[2.5px] text-[rgba(255,255,255,0.4)] uppercase mt-1 font-medium">Precision · Permanence · Art</span>
+                <div className="w-full flex justify-between items-center text-[8px] font-medium text-[rgba(255,255,255,0.45)] uppercase mt-1 select-none">
+                  <span>PRECISION</span>
+                  <span className="text-[#D4AF37]/50 text-[6px]">•</span>
+                  <span>PERMANENCE</span>
+                  <span className="text-[#D4AF37]/50 text-[6px]">•</span>
+                  <span>ART</span>
+                </div>
               </div>
             </Link>
             <p className="text-[13px] text-[rgba(255,255,255,0.45)] leading-relaxed max-w-[280px] mb-6">
