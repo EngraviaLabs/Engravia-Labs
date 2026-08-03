@@ -65,9 +65,12 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     <div className="flex min-h-screen bg-[#0D0D0D]">
       {/* Sidebar */}
       <aside className={`${sidebarOpen ? 'w-60' : 'w-0 overflow-hidden'} bg-[#111] border-r border-[rgba(212,175,55,0.1)] flex-shrink-0 flex flex-col min-h-screen sticky top-0 transition-all duration-200`}>
-        <div className="px-5 py-6 border-b border-[rgba(212,175,55,0.1)]">
-          <div className="font-cinzel text-[14px] font-bold text-[#D4AF37] tracking-[2px]">ENGRAVIA LABS</div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.4)] tracking-[3px] uppercase mt-1">Admin Console</div>
+        <div className="px-5 py-5 border-b border-[rgba(212,175,55,0.1)] flex items-center gap-3">
+          <img src="/images/logo-emblem.png" alt="Engravia Logo" className="h-9 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
+          <div>
+            <div className="font-cinzel text-[13px] font-bold text-[#D4AF37] tracking-[2px] leading-tight">ENGRAVIA LABS</div>
+            <div className="text-[9px] text-[rgba(255,255,255,0.4)] tracking-[2px] uppercase mt-0.5 font-medium">Admin Console</div>
+          </div>
         </div>
         <nav className="flex-1 py-3 overflow-y-auto">
           {NAV_GROUPS.map((group, gi) => (

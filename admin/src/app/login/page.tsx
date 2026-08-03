@@ -44,9 +44,9 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-4">
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(45deg,#D4AF37 0,#D4AF37 1px,transparent 1px,transparent 60px)' }} />
       <div className="w-full max-w-md relative">
-        <div className="text-center mb-10">
-          <div className="font-cinzel text-2xl font-bold text-[#D4AF37] tracking-[4px]">ENGRAVIA <span className="text-white">LABS</span></div>
-          <div className="text-[11px] text-[rgba(255,255,255,0.4)] tracking-[3px] uppercase mt-2">Admin Console</div>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src="/images/logo-transparent.png" alt="Engravia Labs Logo" className="h-28 w-auto object-contain mb-3 filter drop-shadow-[0_0_20px_rgba(212,175,55,0.5)]" />
+          <div className="text-[11px] text-[rgba(255,255,255,0.4)] tracking-[3px] uppercase">Admin Console</div>
         </div>
         <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.15)] p-8">
           {errorMsg && (

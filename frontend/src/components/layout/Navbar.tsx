@@ -33,11 +33,20 @@ export default function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0D0D0D]/98 shadow-2xl' : 'bg-[#0D0D0D]/95'} border-b border-[rgba(212,175,55,0.15)] backdrop-blur-lg`}>
       <nav className="max-w-[1280px] mx-auto px-6 h-[72px] flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <img src="/images/logo.jpg" alt="Engravia Labs Logo" className="h-11 w-auto object-contain mix-blend-screen brightness-110 contrast-125 filter drop-shadow-[0_2px_10px_rgba(212,175,55,0.4)]" />
-          <span className="font-cinzel text-lg font-bold tracking-[3px] text-[#D4AF37] uppercase hidden sm:inline-block">
-            ENGRAVIA <span className="text-white">LABS</span>
-          </span>
+        <Link href="/" className="flex items-center gap-3.5 group">
+          <img 
+            src="/images/logo-emblem.png" 
+            alt="Engravia Labs Monogram" 
+            className="h-10 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300" 
+          />
+          <div className="flex flex-col">
+            <span className="font-cinzel text-[17px] font-bold tracking-[3.5px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors">
+              ENGRAVIA <span className="text-white">LABS</span>
+            </span>
+            <span className="text-[8px] tracking-[2.5px] text-[rgba(255,255,255,0.45)] uppercase mt-1 font-medium hidden sm:block">
+              Precision · Permanence · Art
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}

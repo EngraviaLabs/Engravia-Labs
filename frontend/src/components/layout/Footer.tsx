@@ -19,9 +19,12 @@ export default function Footer() {
       <div className="max-w-[1280px] mx-auto px-10 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pb-12 border-b border-[rgba(212,175,55,0.08)]">
           <div>
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <img src="/images/logo.jpg" alt="Engravia Labs Logo" className="h-11 w-auto object-contain mix-blend-screen brightness-110 contrast-125 filter drop-shadow-[0_2px_10px_rgba(212,175,55,0.4)]" />
-              <span className="font-cinzel text-lg font-bold text-[#D4AF37] tracking-[3px]">ENGRAVIA LABS</span>
+            <Link href="/" className="flex items-center gap-3.5 mb-4 group">
+              <img src="/images/logo-emblem.png" alt="Engravia Labs Logo" className="h-10 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-all" />
+              <div className="flex flex-col">
+                <span className="font-cinzel text-lg font-bold text-[#D4AF37] tracking-[3px] leading-none">ENGRAVIA LABS</span>
+                <span className="text-[8px] tracking-[2.5px] text-[rgba(255,255,255,0.4)] uppercase mt-1 font-medium">Precision · Permanence · Art</span>
+              </div>
             </Link>
             <p className="text-[13px] text-[rgba(255,255,255,0.45)] leading-relaxed max-w-[280px] mb-6">
               India's premier luxury stone engraving studio. Crafting heritage, one stone at a time since 2018.

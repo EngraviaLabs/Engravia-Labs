@@ -53,10 +53,9 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8 flex flex-col items-center">
-          <Link href="/" className="inline-block mb-3">
-            <img src="/images/logo.jpg" alt="Engravia Labs Logo" className="h-20 w-auto object-contain mix-blend-screen brightness-110 contrast-125 filter drop-shadow-[0_4px_16px_rgba(212,175,55,0.4)]" />
+          <Link href="/" className="inline-block mb-3 group">
+            <img src="/images/logo-transparent.png" alt="Engravia Labs Logo" className="h-28 w-auto object-contain filter drop-shadow-[0_0_20px_rgba(212,175,55,0.5)] group-hover:scale-105 transition-all duration-300" />
           </Link>
-          <Link href="/" className="font-cinzel text-2xl font-bold text-[#D4AF37] tracking-[4px]">ENGRAVIA <span className="text-white">LABS</span></Link>
           <h1 className="font-cinzel text-2xl font-bold text-white mt-4 mb-2">{step === 'form' ? 'Create Account' : 'Verify Your Email'}</h1>
           <p className="text-[rgba(255,255,255,0.5)] text-sm">{step === 'form' ? 'Join the Engravia Circle' : `Enter the 6-digit OTP sent to ${form.email}`}</p>
         </div>

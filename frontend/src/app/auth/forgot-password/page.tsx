@@ -45,9 +45,11 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <Link href="/" className="font-cinzel text-2xl font-bold text-[#D4AF37] tracking-[4px]">ENGRAVIA <span className="text-white">LABS</span></Link>
-          <h1 className="font-cinzel text-2xl font-bold text-white mt-6 mb-2">Reset Password</h1>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Link href="/" className="inline-block mb-3 group">
+            <img src="/images/logo-transparent.png" alt="Engravia Labs Logo" className="h-28 w-auto object-contain filter drop-shadow-[0_0_20px_rgba(212,175,55,0.5)] group-hover:scale-105 transition-all duration-300" />
+          </Link>
+          <h1 className="font-cinzel text-2xl font-bold text-white mt-4 mb-2">Reset Password</h1>
         </div>
         <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.12)] p-8">
           {step === 'email' && (
