@@ -1,10 +1,22 @@
 'use client';
 import Link from 'next/link';
 import { useSettings } from '../../hooks/useSettings';
+import { useCategories } from '../../hooks/useProducts';
 
 export default function Footer() {
   const { data: settings } = useSettings();
-  const collections = ['Marble Name Plates','House Number Plates','Memorial Stones','Corporate Signages','Stone Scriptures','Custom Gifts'];
+  const { data: categories } = useCategories();
+
+  const displayCollections = categories && categories.length > 0
+    ? categories.slice(0, 8).map((c: any) => ({ name: c.name, href: `/collection/${c.slug}` }))
+    : [
+        { name: 'Marble Name Plates', href: '/collection' },
+        { name: 'House Number Plates', href: '/collection' },
+        { name: 'Memorial Stones', href: '/collection' },
+        { name: 'Corporate Signages', href: '/collection' },
+        { name: 'Stone Scriptures', href: '/collection' },
+        { name: 'Custom Gifts', href: '/collection' }
+      ];
 
   const phone = settings?.contact_phone || '+91 98765 43210';
   const email = settings?.contact_email || 'hello@engravialabs.com';
@@ -16,7 +28,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#0A0A0A] border-t border-[rgba(212,175,55,0.1)]">
-      <div className="max-w-[1280px] mx-auto px-10 pt-16 pb-8">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-10 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pb-12 border-b border-[rgba(212,175,55,0.08)]">
           <div>
             <Link href="/" className="flex items-center gap-3.5 mb-4 group">
@@ -53,8 +65,12 @@ export default function Footer() {
           <div>
             <div className="font-cinzel text-[13px] font-semibold text-[#D4AF37] tracking-[2px] uppercase mb-5">Collections</div>
             <ul className="space-y-2">
-              {collections.map(l => (
-                <li key={l}><Link href="/collection" className="text-[13px] text-[rgba(255,255,255,0.45)] hover:text-[#D4AF37] transition-colors">{l}</Link></li>
+              {displayCollections.map((c: { name: string; href: string }) => (
+                <li key={c.name}>
+                  <Link href={c.href} className="text-[13px] text-[rgba(255,255,255,0.45)] hover:text-[#D4AF37] transition-colors">
+                    {c.name}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>

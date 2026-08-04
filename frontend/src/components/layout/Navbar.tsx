@@ -64,15 +64,15 @@ export default function Navbar() {
           ))}
         </ul>
         {/* Icons */}
-        <div className="flex items-center gap-5">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-lg" aria-label="Search">
+        <div className="flex items-center gap-2.5 sm:gap-4 lg:gap-5">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Search">
             🔍
           </button>
-          <Link href="/account/wishlist" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-lg" aria-label="Wishlist">
+          <Link href="/account/wishlist" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Wishlist">
             ♡
           </Link>
           <button onClick={() => dispatch(toggleCart())} className="relative text-[rgba(255,255,255,0.8)] hover:text-[#D4AF37] transition-colors p-1" aria-label="Cart">
-            <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
               <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
             </svg>
             {cartCount > 0 && (
@@ -82,14 +82,14 @@ export default function Navbar() {
             )}
           </button>
           {user ? (
-            <Link href="/account/profile" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-lg" aria-label="Account">
+            <Link href="/account/profile" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Account">
               👤
             </Link>
           ) : (
-            <Link href="/auth/login" className="btn-outline-luxury text-[11px] py-2 px-4">Sign In</Link>
+            <Link href="/auth/login" className="btn-outline-luxury text-[10px] sm:text-[11px] py-1.5 px-2.5 sm:px-4">Sign In</Link>
           )}
           {/* Hamburger */}
-          <button className="lg:hidden text-white" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">☰</button>
+          <button className="lg:hidden text-white p-1 text-xl" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">☰</button>
         </div>
       </nav>
 

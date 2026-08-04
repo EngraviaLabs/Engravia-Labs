@@ -8,11 +8,13 @@ import rateLimit from 'express-rate-limit';
 import routes from './routes/index';
 import { errorHandler, notFound } from './middleware/error.middleware';
 
+import path from 'path';
+
 const app: Application = express();
 
 const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL].filter(Boolean) as string[];
 
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(mongoSanitize());
 app.use(cors({
   origin: (origin, callback) => {
@@ -25,6 +27,7 @@ app.use(cors({
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS']
 }));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/payments/stripe/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

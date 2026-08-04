@@ -136,11 +136,32 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Map placeholder */}
-          <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] h-72 flex items-center justify-center mb-20">
-            <div className="text-center">
-              <div className="text-[#D4AF37] text-3xl mb-3">🗺</div>
-              <div className="text-[rgba(255,255,255,0.4)] text-[13px]">Google Map — Kishangarh, Rajasthan</div>
+          {/* Google Map Integration */}
+          <div className="mb-20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 className="font-cinzel text-xl font-bold text-white">Find Our Studio & Workshop</h3>
+                <p className="text-[12px] text-[rgba(255,255,255,0.4)]">Kishangarh, Rajasthan • Visitors Welcome by Appointment</p>
+              </div>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline-luxury text-[10px] py-2 px-4 self-start sm:self-auto"
+              >
+                Open in Maps ↗
+              </a>
+            </div>
+            <div className="w-full h-80 sm:h-96 bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] rounded-sm overflow-hidden shadow-2xl relative">
+              <iframe
+                title="Engravia Labs Location"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+              />
             </div>
           </div>
 
