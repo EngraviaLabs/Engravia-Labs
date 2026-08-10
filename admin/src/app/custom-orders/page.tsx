@@ -7,6 +7,7 @@ import Modal from '../../components/Modal';
 import { Pagination, StatusBadge } from '../../components/UIPrimitives';
 import api from '../../lib/api';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../lib/utils';
 
 const STATUSES = ['', 'pending', 'reviewing', 'quoted', 'approved', 'in_production', 'completed', 'rejected'];
 
@@ -83,7 +84,7 @@ export default function CustomOrdersPage() {
             {detail.additionalNotes && <div className="bg-[#0D0D0D] p-3 border border-[rgba(212,175,55,0.08)]"><div className="text-[10px] text-[rgba(212,175,55,0.6)] uppercase tracking-widest mb-1">Notes</div><div className="text-[rgba(255,255,255,0.7)] text-[13px]">{detail.additionalNotes}</div></div>}
             {detail.referenceImages?.length > 0 && (
               <div><div className="text-[10px] text-[rgba(212,175,55,0.6)] uppercase tracking-widest mb-2">Reference Images</div>
-              <div className="flex gap-2">{detail.referenceImages.map((img: any, i: number) => <img key={i} src={img.url} alt="" className="w-20 h-20 object-cover border border-[rgba(212,175,55,0.2)]" />)}</div></div>
+              <div className="flex gap-2">{detail.referenceImages.map((img: any, i: number) => <img key={i} src={getImageUrl(img.url)} alt="" className="w-20 h-20 object-cover border border-[rgba(212,175,55,0.2)]" />)}</div></div>
             )}
             <div className="pt-4 border-t border-[rgba(212,175,55,0.1)] space-y-3">
               <div className="font-cinzel text-[13px] text-white">Update Status</div>

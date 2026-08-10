@@ -6,6 +6,7 @@ import { StatusBadge } from '../../../components/UIPrimitives';
 import api from '../../../lib/api';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../../lib/utils';
 
 const ORDER_STATUSES = ['placed', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
 
@@ -54,7 +55,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
               {order.items?.map((item: any, i: number) => (
                 <div key={i} className="flex gap-4 py-3 border-b border-[rgba(255,255,255,0.04)] last:border-0">
                   <div className="w-14 h-14 bg-[#111] flex-shrink-0 border border-[rgba(212,175,55,0.1)] overflow-hidden">
-                    {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px] text-[#D4AF37] font-cinzel">EL</div>}
+                    {item.image ? <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px] text-[#D4AF37] font-cinzel">EL</div>}
                   </div>
                   <div className="flex-1">
                     <div className="font-cinzel text-[13px] text-white">{item.name}</div>

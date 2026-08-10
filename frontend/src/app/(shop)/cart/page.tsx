@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import api from '../../../lib/api';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../../lib/utils';
 
 export default function CartPage() {
   const { items, subtotal, shippingCharge, tax, grandTotal, remove, update } = useCart();
@@ -45,7 +46,7 @@ export default function CartPage() {
                 {items.map((item, i) => (
                   <div key={i} className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-5 flex gap-5">
                     <div className="w-24 h-24 flex-shrink-0 bg-[#111] border border-[rgba(212,175,55,0.1)] overflow-hidden">
-                      {item.product.images?.[0] ? <img src={item.product.images[0].url} alt={item.product.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-cinzel text-[#D4AF37] text-xs">EL</div>}
+                      {item.product.images?.[0] ? <img src={getImageUrl(item.product.images[0].url)} alt={item.product.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center font-cinzel text-[#D4AF37] text-xs">EL</div>}
                     </div>
                     <div className="flex-1">
                       <div className="font-cinzel text-[14px] font-semibold text-white mb-1">{item.product.name}</div>

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCartOpen, setCartOpen } from '../../store/slices/cartSlice';
+import { getImageUrl } from '../../lib/utils';
 import { useCart } from '../../hooks/useCart';
 
 export default function CartDrawer() {
@@ -33,7 +34,7 @@ export default function CartDrawer() {
             <div key={i} className="flex gap-4 p-4 bg-[#1A1A1A] border border-[rgba(212,175,55,0.08)]">
               <div className="w-16 h-16 bg-[#111] flex-shrink-0 flex items-center justify-center border border-[rgba(212,175,55,0.1)]">
                 {item.product.images?.[0] ? (
-                  <img src={item.product.images[0].url} alt={item.product.name} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(item.product.images[0].url)} alt={item.product.name} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-[#D4AF37] text-xs font-cinzel">EL</span>
                 )}

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import SectionHeader from '../ui/SectionHeader';
+import { getImageUrl } from '../../lib/utils';
 
 const fallbackCategories = [
   { name:'Marble Name Plates', count:'48', slug:'marble-name-plates', icon:'◈' },
@@ -25,7 +26,7 @@ export default function CollectionsGrid({ categories }: { categories?: any[] }) 
             <Link key={cat.slug||cat._id} href={`/collection/${cat.slug}`}
               className="group relative aspect-[3/4] bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] rounded-xl overflow-hidden hover:border-[rgba(212,175,55,0.5)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-end">
               {cat.image?.url ? (
-                <Image src={cat.image.url} alt={cat.name} fill className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500" sizes="25vw" />
+                <Image src={getImageUrl(cat.image.url)} alt={cat.name} fill unoptimized className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500" sizes="25vw" />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="absolute inset-0 opacity-[0.06]" style={{backgroundImage:'repeating-linear-gradient(-45deg,#D4AF37 0px,#D4AF37 1px,transparent 1px,transparent 20px)'}} />

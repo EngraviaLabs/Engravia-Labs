@@ -111,7 +111,7 @@ export default function CategoriesPage() {
           <div><label className="label-field">SEO Description</label><textarea value={form.metaDescription} onChange={e => setForm(f => ({ ...f, metaDescription: e.target.value }))} className="input-field resize-none h-16" /></div>
           <div>
             <label className="label-field">Category Image</label>
-            {editing?.image?.url && !imageFile && <img src={editing.image.url} alt="" className="h-20 object-cover mb-2 border border-[rgba(212,175,55,0.2)]" />}
+            {editing?.image?.url && !imageFile && <img src={getImageUrl(editing.image.url)} alt="" className="h-20 object-cover mb-2 border border-[rgba(212,175,55,0.2)]" />}
             <label className="block border-dashed border border-[rgba(212,175,55,0.2)] p-4 text-center cursor-pointer hover:border-[#D4AF37] transition-colors">
               <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="hidden" />
               <div className="text-[12px] text-[rgba(255,255,255,0.4)]">{imageFile ? imageFile.name : 'Click to upload image'}</div>

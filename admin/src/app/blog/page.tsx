@@ -7,6 +7,7 @@ import { Pagination, StatusBadge } from '../../components/UIPrimitives';
 import api from '../../lib/api';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../lib/utils';
 
 export default function BlogPage() {
   const [page, setPage] = useState(1);
@@ -71,7 +72,7 @@ export default function BlogPage() {
         <div className="space-y-3">
           {blogs.map((b: any) => (
             <div key={b._id} className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-5 flex gap-5 hover:border-[rgba(212,175,55,0.3)] transition-colors">
-              {b.featuredImage?.url && <img src={b.featuredImage.url} alt={b.title} className="w-20 h-14 object-cover flex-shrink-0 border border-[rgba(212,175,55,0.1)]" />}
+              {b.featuredImage?.url && <img src={getImageUrl(b.featuredImage.url)} alt={b.title} className="w-20 h-14 object-cover flex-shrink-0 border border-[rgba(212,175,55,0.1)]" />}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start gap-3 mb-1">
                   <div className="font-cinzel text-[14px] font-semibold text-white flex-1 truncate">{b.title}</div>

@@ -5,6 +5,7 @@ import AdminShell from '../../components/AdminShell';
 import Modal from '../../components/Modal';
 import api from '../../lib/api';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../lib/utils';
 
 export default function HomepageBuilderPage() {
   const qc = useQueryClient();
@@ -84,7 +85,7 @@ export default function HomepageBuilderPage() {
                 <div className="grid md:grid-cols-2 gap-4">
                   {section.banners.map((b: any) => (
                     <div key={b._id} className="border border-[rgba(212,175,55,0.1)] overflow-hidden">
-                      {b.image?.url && <img src={b.image.url} alt={b.title} className="w-full h-32 object-cover" />}
+                      {b.image?.url && <img src={getImageUrl(b.image.url)} alt={b.title} className="w-full h-32 object-cover" />}
                       <div className="p-4">
                         <div className="font-cinzel text-[13px] font-semibold text-white mb-1">{b.title}</div>
                         {b.subtitle && <div className="text-[12px] text-[rgba(255,255,255,0.5)] mb-2">{b.subtitle}</div>}

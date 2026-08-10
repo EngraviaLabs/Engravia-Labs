@@ -3,6 +3,7 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImageUrl } from '../../../lib/utils';
 import { notFound } from 'next/navigation';
 
 type Props = { params: { slug: string } };
@@ -89,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           {blog.featuredImage?.url && (
             <div className="relative aspect-video mb-10 bg-[#111] overflow-hidden">
-              <Image src={blog.featuredImage.url} alt={blog.title} fill className="object-cover" sizes="800px" priority />
+              <Image src={getImageUrl(blog.featuredImage.url)} alt={blog.title} fill unoptimized className="object-cover" sizes="800px" priority />
             </div>
           )}
 

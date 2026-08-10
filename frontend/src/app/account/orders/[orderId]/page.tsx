@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../store/slices/authSlice';
 import { useRouter } from 'next/navigation';
 import api from '../../../../lib/api';
+import { getImageUrl } from '../../../../lib/utils';
 import Navbar from '../../../../components/layout/Navbar';
 import Footer from '../../../../components/layout/Footer';
 import Link from 'next/link';
@@ -55,7 +56,7 @@ export default function OrderDetailPage({ params }: { params: { orderId: string 
                   {order.items?.map((item: any, i: number) => (
                     <div key={i} className="flex gap-4 pb-4 border-b border-[rgba(255,255,255,0.04)] last:border-0 last:pb-0">
                       <div className="w-16 h-16 bg-[#111] flex-shrink-0 overflow-hidden border border-[rgba(212,175,55,0.1)]">
-                        {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[#D4AF37] font-cinzel text-xs">EL</div>}
+                        {item.image ? <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[#D4AF37] font-cinzel text-xs">EL</div>}
                       </div>
                       <div className="flex-1">
                         <div className="font-cinzel text-[13px] text-white font-semibold">{item.name}</div>

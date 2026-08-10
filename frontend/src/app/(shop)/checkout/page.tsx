@@ -8,6 +8,7 @@ import { selectUser } from '../../../store/slices/authSlice';
 import api from '../../../lib/api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../../lib/utils';
 
 const INDIAN_STATES = ['Andhra Pradesh','Delhi','Gujarat','Karnataka','Kerala','Maharashtra','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','West Bengal'];
 
@@ -185,7 +186,7 @@ export default function CheckoutPage() {
                   <div className="space-y-3 mb-6">
                     {items.map((item,i)=>(
                       <div key={i} className="flex items-center gap-4 py-3 border-b border-[rgba(255,255,255,0.04)]">
-                        <div className="w-12 h-12 bg-[#111] flex-shrink-0">{item.product.images?.[0]&&<img src={item.product.images[0].url} className="w-full h-full object-cover" />}</div>
+                        <div className="w-12 h-12 bg-[#111] flex-shrink-0">{item.product.images?.[0]&&<img src={getImageUrl(item.product.images[0].url)} className="w-full h-full object-cover" />}</div>
                         <div className="flex-1"><div className="text-[13px] font-semibold text-white">{item.product.name}</div><div className="text-[11px] text-[rgba(255,255,255,0.4)]">Qty: {item.quantity}</div></div>
                         <div className="font-cinzel text-[#D4AF37] font-bold">₹{(item.price*item.quantity).toLocaleString()}</div>
                       </div>

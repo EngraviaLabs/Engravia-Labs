@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 import ImageZoom from '../../../../components/common/ImageZoom';
+import { getImageUrl } from '../../../../lib/utils';
 
 export default function ProductPageClient({ slug }: { slug: string }) {
   const { data: product, isLoading } = useProduct(slug);
@@ -78,7 +79,7 @@ export default function ProductPageClient({ slug }: { slug: string }) {
             <div className="flex gap-3 overflow-x-auto">
               {product.images.map((img: any, i: number) => (
                 <button key={i} onClick={() => setActiveImg(i)} className={`w-16 h-16 flex-shrink-0 relative border-2 transition-all ${activeImg===i?'border-[#D4AF37]':'border-[rgba(212,175,55,0.15)] hover:border-[rgba(212,175,55,0.4)]'}`}>
-                  <Image src={img.url} alt={`View ${i+1}`} fill className="object-cover" sizes="64px" />
+                  <Image src={getImageUrl(img.url)} alt={`View ${i+1}`} fill unoptimized className="object-cover" sizes="64px" />
                 </button>
               ))}
             </div>

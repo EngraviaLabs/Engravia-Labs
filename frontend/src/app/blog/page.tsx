@@ -3,6 +3,7 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImageUrl } from '../../lib/utils';
 
 export const metadata: Metadata = {
   title: 'Blog – ENGRAVIA LABS',
@@ -55,7 +56,7 @@ export default async function BlogPage({ searchParams }: { searchParams: { [key:
               <Link key={post._id} href={`/blog/${post.slug}`} className="group bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] hover:border-[rgba(212,175,55,0.4)] transition-all overflow-hidden block">
                 <div className="aspect-[16/10] bg-[#111] relative overflow-hidden">
                   {post.featuredImage?.url ? (
-                    <Image src={post.featuredImage.url} alt={post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="33vw" />
+                    <Image src={getImageUrl(post.featuredImage.url)} alt={post.title} fill unoptimized className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="33vw" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="border border-[rgba(212,175,55,0.2)] w-16 h-16 flex items-center justify-center text-[#D4AF37] text-xl">✦</div>
