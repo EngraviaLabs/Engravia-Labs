@@ -58,7 +58,7 @@ const userSchema = new Schema<IUser>(
     role: { type: String, enum: ['customer', 'admin', 'super_admin'], default: 'customer' },
     isVerified: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
-    otp: { code: { type: String, select: false }, expiresAt: Date },
+    otp: { code: String, expiresAt: Date },
     refreshToken: { type: String, select: false },
     avatar: String,
     addresses: [addressSchema],

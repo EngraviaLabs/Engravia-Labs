@@ -3,8 +3,8 @@ import https from 'https';
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const SENDER_NAME = process.env.SENDER_NAME || 'Engravia Labs';
-const SENDER_EMAIL = process.env.SENDER_EMAIL || process.env.SMTP_USER || 'hello@engravialabs.com';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.SMTP_USER || 'hello@engravialabs.com';
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'engravialabs@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'engravialabs@gmail.com';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -17,6 +17,7 @@ const sendViaBrevo = (to: string, subject: string, html: string, senderName = SE
   return new Promise((resolve) => {
     const apiKey = process.env.BREVO_API_KEY || BREVO_API_KEY;
     if (!apiKey) {
+      console.warn(`[EmailService] BREVO_API_KEY missing. Cannot send via Brevo.`);
       resolve(false);
       return;
     }
@@ -42,7 +43,7 @@ const sendViaBrevo = (to: string, subject: string, html: string, senderName = SE
       res.on('data', chunk => { body += chunk; });
       res.on('end', () => {
         if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-          console.log(`[EmailService] Sent email to ${to} via Brevo API (${res.statusCode})`);
+          console.log(`[EmailService] ✅ Sent email to ${to} via Brevo API (${res.statusCode})`);
           resolve(true);
         } else {
           console.warn(`[EmailService Error] Brevo API status ${res.statusCode}: ${body}`);
@@ -90,7 +91,7 @@ const baseTemplate = (content: string) => `
 <body><div class="wrapper">
   <div class="header"><div class="logo">ENGRAVIA <span>LABS</span></div></div>
   <div class="body">${content}</div>
-  <div class="footer">© 2026 Engravia Labs · Rajasthan, India · hello@engravialabs.com<br>Luxury Stone Engraving & Custom Art Studio</div>
+  <div class="footer">© 2026 Engravia Labs · Rajasthan, India · engravialabs@gmail.com<br>Luxury Stone Engraving & Custom Art Studio</div>
 </div></body></html>`;
 
 const sendMail = async (to: string, subject: string, html: string) => {
@@ -102,7 +103,7 @@ const sendMail = async (to: string, subject: string, html: string) => {
       await transporter.sendMail({ from: `"${SENDER_NAME}" <${SENDER_EMAIL}>`, to, subject, html });
       console.log(`[EmailService] Sent email to ${to} via SMTP`);
     } else {
-      console.log(`[EmailService Notice] Email to ${to} skipped (No active Brevo or SMTP credentials configured). Subject: ${subject}`);
+      console.warn(`[EmailService Warning] Failed to send email to ${to}. Neither Brevo nor SMTP was successful.`);
     }
   } catch (err: any) {
     console.warn(`[EmailService Warning] Failed to send email to ${to}:`, err.message || err);
@@ -133,7 +134,7 @@ const emailService = {
   async sendPasswordChangedNotification(email: string, name: string) {
     const html = baseTemplate(`
       <div class="title">Password Changed Successfully</div>
-      <div class="text">Hello <strong>${name}</strong>,<br><br>Your Engravia Labs password has been updated successfully. If you did not initiate this change, please contact us immediately at <a href="mailto:hello@engravialabs.com" style="color:#D4AF37;">hello@engravialabs.com</a>.</div>
+      <div class="text">Hello <strong>${name}</strong>,<br><br>Your Engravia Labs password has been updated successfully. If you did not initiate this change, please contact us immediately at <a href="mailto:engravialabs@gmail.com" style="color:#D4AF37;">engravialabs@gmail.com</a>.</div>
     `);
     await sendMail(email, 'Password Changed – Engravia Labs', html);
   },

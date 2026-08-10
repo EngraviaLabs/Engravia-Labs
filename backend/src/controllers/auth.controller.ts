@@ -39,14 +39,13 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       otp: { code: otp, expiresAt: new Date(Date.now() + 15 * 60000) }
     });
     
-    emailService.sendOTP(cleanEmail, user.name, otp).catch(e => console.warn('Email OTP Error:', e));
+    await emailService.sendOTP(cleanEmail, user.name, otp);
     console.log(`[AUTH REGISTRATION] OTP for ${cleanEmail} (userId: ${user._id}): ${otp}`);
     
     res.status(201).json({
       success: true,
-      message: 'Registration successful. Enter your OTP or 123456 to verify.',
+      message: 'Registration successful. Please check your email for the 6-digit OTP code.',
       userId: user._id,
-      devOtp: otp,
     });
   } catch (e) { next(e); }
 };
@@ -54,14 +53,26 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 export const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId, otp } = req.body;
-    const user = await User.findById(userId).select('+otp');
+    if (!userId || !otp) return next(new AppError('User ID and OTP code are required.', 400));
+    const user = await User.findById(userId);
     if (!user) return next(new AppError('User account not found.', 404));
     
+    if (user.isVerified) {
+      return sendTokens(res, user);
+    }
+
     const submittedOtp = String(otp || '').trim();
-    const validOtp = user.otp?.code;
-    const isValid = submittedOtp === validOtp || submittedOtp === '123456';
-    
-    if (!isValid) return next(new AppError('Invalid OTP code. Please enter the OTP sent to your email or 123456.', 400));
+    if (!user.otp || !user.otp.code) {
+      return next(new AppError('No pending OTP found for this account. Please click Resend OTP.', 400));
+    }
+
+    if (user.otp.expiresAt && new Date(user.otp.expiresAt).getTime() < Date.now()) {
+      return next(new AppError('The OTP code has expired. Please click Resend OTP.', 400));
+    }
+
+    if (submittedOtp !== String(user.otp.code).trim()) {
+      return next(new AppError('Invalid OTP code. Please enter the exact 6-digit OTP sent to your email.', 400));
+    }
     
     user.isVerified = true;
     user.otp = undefined;
@@ -73,6 +84,7 @@ export const verifyOTP = async (req: Request, res: Response, next: NextFunction)
 export const resendOTP = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userId } = req.body;
+    if (!userId) return next(new AppError('User ID is required to resend OTP.', 400));
     const user = await User.findById(userId);
     if (!user) return next(new AppError('User not found.', 404));
     if (user.isVerified) {
@@ -81,9 +93,9 @@ export const resendOTP = async (req: Request, res: Response, next: NextFunction)
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     user.otp = { code: otp, expiresAt: new Date(Date.now() + 15 * 60000) };
     await user.save({ validateBeforeSave: false });
-    emailService.sendOTP(user.email, user.name, otp).catch(e => console.warn('Resend OTP Error:', e));
+    await emailService.sendOTP(user.email, user.name, otp);
     console.log(`[AUTH RESEND OTP] New OTP for ${user.email}: ${otp}`);
-    res.json({ success: true, message: 'OTP resent successfully.', devOtp: otp });
+    res.json({ success: true, message: 'A new 6-digit OTP has been sent to your email.' });
   } catch (e) { next(e); }
 };
 
@@ -115,7 +127,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return next(new AppError('Invalid email or password.', 401));
     }
     if (!user.isVerified) {
-      user.isVerified = true;
+      return next(new AppError('Please verify your email address before signing in. Enter the OTP sent to your email.', 403));
     }
     user.lastLogin = new Date();
     await user.save({ validateBeforeSave: false });
