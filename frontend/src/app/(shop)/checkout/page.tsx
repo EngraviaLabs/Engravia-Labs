@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'razorpay'|'stripe'|'cod'>('razorpay');
+  const [paymentMethod, setPaymentMethod] = useState<'razorpay'|'gpay'|'cod'>('razorpay');
   const [address, setAddress] = useState({ fullName: user?.name||'', phone: user?.phone||'', line1:'', line2:'', city:'', state:'Rajasthan', pincode:'', country:'India' });
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
@@ -39,6 +39,13 @@ export default function CheckoutPage() {
   const placeOrder = async () => {
     if (!items.length) return;
 
+    // Check user authentication
+    if (!user) {
+      toast.error('Please sign in or create an account to place your order.');
+      router.push('/auth/login?redirect=/checkout');
+      return;
+    }
+
     // Validate 10-digit phone number
     const phoneDigits = (address.phone || '').replace(/\D/g, '');
     const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
@@ -53,16 +60,14 @@ export default function CheckoutPage() {
         items: items.map(i => ({ productId: i.product._id, quantity: i.quantity, customization: i.customization })),
         shippingAddress: { ...address, phone: cleanPhone },
         paymentMethod,
-        guestEmail: !user ? prompt('Enter your email for order confirmation:') : undefined,
-        guestName: !user ? address.fullName : undefined,
       };
       const { data } = await api.post('/orders', orderPayload);
       const order = data.order;
 
-      if (paymentMethod === 'razorpay') {
+      if (paymentMethod === 'razorpay' || paymentMethod === 'gpay') {
         const scriptLoaded = await loadRazorpayScript();
         if (!scriptLoaded) {
-          toast.error('Failed to load Razorpay payment gateway. Please check your network connection.');
+          toast.error('Failed to load payment gateway. Please check your network connection.');
           return;
         }
 
@@ -75,6 +80,18 @@ export default function CheckoutPage() {
           description: `Order #${order.orderNumber}`,
           image: '/images/logo.jpg',
           order_id: rzp.order_id || rzp.razorpayOrderId,
+          config: paymentMethod === 'gpay' ? {
+            display: {
+              blocks: {
+                banks: {
+                  name: 'Pay using Google Pay / UPI',
+                  instruments: [{ method: 'upi' }]
+                }
+              },
+              sequence: ['block.banks'],
+              preferences: { show_default_blocks: true }
+            }
+          } : undefined,
           handler: async (response: any) => {
             try {
               toast.loading('Verifying payment signature...', { id: 'rzp-verify' });
@@ -131,7 +148,19 @@ export default function CheckoutPage() {
       <Navbar />
       <main className="min-h-screen bg-[#0D0D0D] pt-24 pb-16">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="font-cinzel text-3xl font-bold text-white mb-10">Checkout</div>
+          <div className="font-cinzel text-3xl font-bold text-white mb-6">Checkout</div>
+
+          {!user && (
+            <div className="bg-[rgba(212,175,55,0.08)] border border-[rgba(212,175,55,0.3)] p-4 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-white text-[13px]">
+                <span className="text-xl text-[#D4AF37]">🔑</span>
+                <span>Please <strong>sign in</strong> or create an account to place your order.</span>
+              </div>
+              <button onClick={() => router.push('/auth/login?redirect=/checkout')} className="btn-luxury py-2 px-5 text-[11px] whitespace-nowrap">
+                Sign In / Register →
+              </button>
+            </div>
+          )}
 
           {/* Steps */}
           <div className="flex items-center gap-0 mb-10">
@@ -174,7 +203,7 @@ export default function CheckoutPage() {
                 <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-7">
                   <div className="font-cinzel text-[16px] font-semibold text-white mb-6">Payment Method</div>
                   <div className="space-y-3 mb-8">
-                    {[['razorpay','Razorpay (UPI, Cards, Net Banking)','Recommended'],['stripe','Stripe (International Cards)',''],['cod','Cash on Delivery','Extra ₹50 charge']].map(([val,label,note])=>(
+                    {[['razorpay','Razorpay (Cards, Net Banking, Wallets)','Recommended'],['gpay','Google Pay / UPI','Instant & Fast Payment'],['cod','Cash on Delivery','Pay on delivery']].map(([val,label,note])=>(
                       <label key={val} className={`flex items-center gap-4 p-4 border cursor-pointer transition-all ${paymentMethod===val?'border-[#D4AF37] bg-[rgba(212,175,55,0.05)]':'border-[rgba(212,175,55,0.1)] hover:border-[rgba(212,175,55,0.3)]'}`}>
                         <input type="radio" name="payment" value={val} checked={paymentMethod===val} onChange={()=>setPaymentMethod(val as any)} className="accent-[#D4AF37]" />
                         <div>

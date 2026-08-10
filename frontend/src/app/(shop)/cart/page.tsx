@@ -8,11 +8,25 @@ import api from '../../../lib/api';
 import toast from 'react-hot-toast';
 import { getImageUrl } from '../../../lib/utils';
 
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../store/slices/authSlice';
+import { useRouter } from 'next/navigation';
+
 export default function CartPage() {
   const { items, subtotal, shippingCharge, tax, grandTotal, remove, update } = useCart();
+  const user = useSelector(selectUser);
+  const router = useRouter();
   const [coupon, setCoupon] = useState('');
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState('');
+
+  const handleCheckoutClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      toast.error('Please sign in or create an account to place your order.');
+      router.push('/auth/login?redirect=/checkout');
+    }
+  };
 
   const applyCoupon = async () => {
     try {
@@ -96,7 +110,7 @@ export default function CartPage() {
                   <div className="h-px bg-[rgba(212,175,55,0.1)]" />
                   <div className="flex justify-between font-bold text-lg"><span className="font-cinzel text-white">Total</span><span className="font-cinzel text-[#D4AF37]">₹{(grandTotal-discount).toLocaleString()}</span></div>
                 </div>
-                <Link href="/checkout" className="btn-luxury w-full block text-center">Proceed to Checkout</Link>
+                <Link href="/checkout" onClick={handleCheckoutClick} className="btn-luxury w-full block text-center">Proceed to Checkout</Link>
                 <Link href="/collection" className="btn-outline-luxury w-full block text-center mt-3 text-[11px]">Continue Shopping</Link>
               </div>
             </div>

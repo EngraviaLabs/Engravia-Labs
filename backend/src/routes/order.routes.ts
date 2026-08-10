@@ -3,7 +3,7 @@ import { createOrder, getMyOrders, getOrderById, cancelOrder, getAllOrders, upda
 import { protect, isAdmin, optionalAuth } from '../middleware/auth.middleware';
 
 const router = Router();
-router.post('/', optionalAuth, createOrder);
+router.post('/', protect, createOrder);
 router.get('/my', protect, getMyOrders);
 router.get('/my/:id', protect, getOrderById);
 router.patch('/my/:id/cancel', protect, cancelOrder);

@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export type OrderStatus = 'placed'|'confirmed'|'processing'|'shipped'|'delivered'|'cancelled'|'refunded';
 export type PaymentStatus = 'pending'|'paid'|'failed'|'refunded'|'partially_refunded';
-export type PaymentMethod = 'razorpay'|'stripe'|'cod';
+export type PaymentMethod = 'razorpay'|'gpay'|'stripe'|'cod';
 
 export interface IOrder extends Document {
   orderNumber: string;
@@ -34,7 +34,7 @@ const orderSchema = new Schema<IOrder>({
   couponCode: String, shippingCharge: { type: Number, default: 0 },
   taxAmount: { type: Number, default: 0 }, taxRate: { type: Number, default: 0 },
   total: { type: Number, required: true },
-  paymentMethod: { type: String, enum: ['razorpay','stripe','cod'], required: true },
+  paymentMethod: { type: String, enum: ['razorpay','gpay','stripe','cod'], required: true },
   paymentStatus: { type: String, enum: ['pending','paid','failed','refunded','partially_refunded'], default: 'pending' },
   paymentDetails: { razorpayOrderId: String, razorpayPaymentId: String, razorpaySignature: String, stripePaymentIntentId: String, paidAt: Date },
   orderStatus: { type: String, enum: ['placed','confirmed','processing','shipped','delivered','cancelled','refunded'], default: 'placed' },

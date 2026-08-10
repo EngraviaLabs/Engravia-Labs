@@ -10,6 +10,9 @@ import { getPaginationData } from '../utils/pagination';
 
 export const createOrder = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
+    if (!req.user?.id) {
+      return next(new AppError('Please sign in to place your order.', 401));
+    }
     const { items, shippingAddress, paymentMethod, couponCode, notes, guestEmail, guestName, sameAsBilling, billingAddress } = req.body;
     
     // Validate items and compute subtotal
