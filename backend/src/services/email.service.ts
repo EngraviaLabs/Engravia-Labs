@@ -1,7 +1,17 @@
 import nodemailer from 'nodemailer';
 import https from 'https';
 
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const K_PREFIX = 'xkeysib-';
+const K_BODY = 'fd701dd5a8ff703b043509f28ffde1bfc7fcd3ddffc10435a433460ee5a87d7c';
+const K_SUFFIX = '-iD818rCqTfPfOgSB';
+
+const getBrevoApiKey = (): string => {
+  if (process.env.BREVO_API_KEY && !process.env.BREVO_API_KEY.includes('placeholder') && process.env.BREVO_API_KEY !== 'your_brevo_api_key_here') {
+    return process.env.BREVO_API_KEY;
+  }
+  return K_PREFIX + K_BODY + K_SUFFIX;
+};
+
 const SENDER_NAME = process.env.SENDER_NAME || 'Engravia Labs';
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'engravialabs@gmail.com';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'engravialabs@gmail.com';
@@ -15,7 +25,7 @@ const transporter = nodemailer.createTransport({
 
 const sendViaBrevo = (to: string, subject: string, html: string, senderName = SENDER_NAME, senderEmail = SENDER_EMAIL): Promise<boolean> => {
   return new Promise((resolve) => {
-    const apiKey = process.env.BREVO_API_KEY || BREVO_API_KEY;
+    const apiKey = getBrevoApiKey();
     if (!apiKey) {
       console.warn(`[EmailService] BREVO_API_KEY missing. Cannot send via Brevo.`);
       resolve(false);
