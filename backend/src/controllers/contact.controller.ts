@@ -9,6 +9,14 @@ export const submitContactForm = async (req: Request, res: Response, next: NextF
       return next(new AppError('Name, email, subject, and message are required fields.', 400));
     }
 
+    if (phone) {
+      const phoneDigits = String(phone).replace(/\D/g, '');
+      const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+      if (cleanPhone.length !== 10) {
+        return next(new AppError('Please enter a valid 10-digit phone number.', 400));
+      }
+    }
+
     const cleanEmail = String(email).trim().toLowerCase();
     await emailService.sendContactFormSubmission({
       name: String(name).trim(),

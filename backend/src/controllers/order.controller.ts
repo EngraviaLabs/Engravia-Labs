@@ -42,29 +42,37 @@ export const createOrder = async (req: AuthRequest, res: Response, next: NextFun
     const taxAmount = Math.round(taxableAmount * taxRate);
     const total = taxableAmount + taxAmount;
     
+    const isOnlinePayment = paymentMethod === 'razorpay' || paymentMethod === 'stripe';
+
     const order = await Order.create({
       user: req.user?.id, guestEmail, guestName, items: orderItems,
       shippingAddress, billingAddress, sameAsBilling,
       subtotal, discountAmount, couponCode, shippingCharge, taxAmount, taxRate, total,
-      paymentMethod, paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending', notes,
+      paymentMethod,
+      paymentStatus: 'pending',
+      orderStatus: 'placed',
+      notes,
     });
     
-    // Decrement stock
-    await Promise.all(items.map((item: any) => Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.quantity, salesCount: item.quantity } })));
-    
-    // Update coupon usage
-    if (couponDoc && req.user?.id) {
-      await Coupon.findByIdAndUpdate(couponDoc._id, { $inc: { usedCount: 1 }, $push: { usedBy: { user: req.user.id, orderId: order._id } } });
+    // For COD orders: Confirm order, decrement stock, update stats, and send email immediately!
+    if (paymentMethod === 'cod') {
+      // Decrement stock
+      await Promise.all(items.map((item: any) => Product.findByIdAndUpdate(item.productId, { $inc: { stock: -item.quantity, salesCount: item.quantity } })));
+      
+      // Update coupon usage
+      if (couponDoc && req.user?.id) {
+        await Coupon.findByIdAndUpdate(couponDoc._id, { $inc: { usedCount: 1 }, $push: { usedBy: { user: req.user.id, orderId: order._id } } });
+      }
+      
+      // Update user stats
+      if (req.user?.id) {
+        await User.findByIdAndUpdate(req.user.id, { $inc: { totalOrders: 1, totalSpent: total } });
+      }
+      
+      // Send confirmation email
+      const emailTo = req.user?.email || guestEmail;
+      if (emailTo) await emailService.sendOrderConfirmation(emailTo, guestName || 'Valued Customer', order);
     }
-    
-    // Update user stats
-    if (req.user?.id) {
-      await User.findByIdAndUpdate(req.user.id, { $inc: { totalOrders: 1, totalSpent: total } });
-    }
-    
-    // Send confirmation email
-    const emailTo = req.user?.email || guestEmail;
-    if (emailTo) await emailService.sendOrderConfirmation(emailTo, guestName || 'Valued Customer', order);
     
     res.status(201).json({ success: true, order });
   } catch (e) { next(e); }

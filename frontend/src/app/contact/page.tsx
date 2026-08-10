@@ -24,6 +24,14 @@ export default function ContactPage() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (form.phone) {
+      const phoneDigits = form.phone.replace(/\D/g, '');
+      const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+      if (cleanPhone.length !== 10) {
+        toast.error('Please enter a valid 10-digit phone number');
+        return;
+      }
+    }
     setLoading(true);
     try {
       const { data } = await api.post('/contact', form);

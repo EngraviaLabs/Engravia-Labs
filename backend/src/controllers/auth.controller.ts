@@ -26,6 +26,13 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
   try {
     const { name, email, phone, password } = req.body;
     if (!email || !phone) return next(new AppError('Both email and phone number are required for registration.', 400));
+    
+    const phoneDigits = String(phone).replace(/\D/g, '');
+    const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+    if (cleanPhone.length !== 10) {
+      return next(new AppError('Please enter a valid 10-digit phone number.', 400));
+    }
+
     const cleanEmail = String(email).trim().toLowerCase();
     if (await User.findOne({ email: cleanEmail })) return next(new AppError('Email already registered. Please sign in.', 409));
     

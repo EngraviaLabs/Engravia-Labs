@@ -19,6 +19,14 @@ export default function RegisterPage() {
   const onRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.email || !form.phone) { toast.error('Both email and phone number are required'); return; }
+    
+    const phoneDigits = form.phone.replace(/\D/g, '');
+    const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+    if (cleanPhone.length !== 10) {
+      toast.error('Please enter a valid 10-digit phone number');
+      return;
+    }
+
     if (form.password !== form.confirm) { toast.error('Passwords do not match'); return; }
     if (form.password.length < 8) { toast.error('Password must be at least 8 characters'); return; }
     setLoading(true);

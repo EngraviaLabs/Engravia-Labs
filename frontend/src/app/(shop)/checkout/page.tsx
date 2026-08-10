@@ -38,11 +38,20 @@ export default function CheckoutPage() {
 
   const placeOrder = async () => {
     if (!items.length) return;
+
+    // Validate 10-digit phone number
+    const phoneDigits = (address.phone || '').replace(/\D/g, '');
+    const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+    if (cleanPhone.length !== 10) {
+      toast.error('Please enter a valid 10-digit phone number in shipping address');
+      return;
+    }
+
     setLoading(true);
     try {
       const orderPayload = {
         items: items.map(i => ({ productId: i.product._id, quantity: i.quantity, customization: i.customization })),
-        shippingAddress: address,
+        shippingAddress: { ...address, phone: cleanPhone },
         paymentMethod,
         guestEmail: !user ? prompt('Enter your email for order confirmation:') : undefined,
         guestName: !user ? address.fullName : undefined,
@@ -83,21 +92,24 @@ export default function CheckoutPage() {
             }
           },
           modal: {
-            ondismiss: () => {
-              toast.error('Payment checkout cancelled. You can retry payment anytime from your order details.');
+            ondismiss: async () => {
+              await api.post('/payments/payment-failed', { orderId: order._id, reason: 'Payment modal closed by user' }).catch(() => {});
+              toast.error('Payment checkout cancelled. Order remains unconfirmed until payment is completed.');
             }
           },
           prefill: {
             name: address.fullName,
-            contact: address.phone,
+            contact: cleanPhone,
             email: user?.email || '',
           },
           theme: { color: '#D4AF37' },
         };
 
         const rzpInstance = new (window as any).Razorpay(options);
-        rzpInstance.on('payment.failed', function (resp: any) {
-          toast.error(`Payment failed: ${resp.error?.description || 'Transaction unsuccessful'}`);
+        rzpInstance.on('payment.failed', async function (resp: any) {
+          const reason = resp.error?.description || 'Transaction unsuccessful';
+          await api.post('/payments/payment-failed', { orderId: order._id, reason }).catch(() => {});
+          toast.error(`Payment failed: ${reason}. Order is unconfirmed.`);
         });
         rzpInstance.open();
       } else if (paymentMethod === 'cod') {
