@@ -8,7 +8,8 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import toast from 'react-hot-toast';
 
-const STATES = ['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Delhi','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal'];
+import { ALL_INDIAN_STATES, validateCityAndState } from '../../../lib/locationUtils';
+
 const empty = { label:'Home', fullName:'', phone:'', line1:'', line2:'', city:'', state:'Rajasthan', pincode:'', country:'India', isDefault:false };
 
 export default function AddressesPage() {
@@ -39,11 +40,29 @@ export default function AddressesPage() {
   };
 
   const onSave = async (e: React.FormEvent) => {
-    e.preventDefault(); setSaving(true);
+    e.preventDefault();
+
+    // Phone 10-digit check
+    const phoneDigits = (form.phone || '').replace(/\D/g, '');
+    const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+    if (cleanPhone.length !== 10) {
+      toast.error('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    // City to State validation check
+    const cityCheck = validateCityAndState(form.city, form.state);
+    if (!cityCheck.isValid) {
+      toast.error(cityCheck.message || 'City does not match the selected state.');
+      return;
+    }
+
+    setSaving(true);
     try {
+      const payload = { ...form, phone: cleanPhone };
       let res;
-      if (editing) res = await api.put(`/auth/addresses/${editing._id}`, form);
-      else res = await api.post('/auth/addresses', form);
+      if (editing) res = await api.put(`/auth/addresses/${editing._id}`, payload);
+      else res = await api.post('/auth/addresses', payload);
       dispatch(updateUser({ addresses: res.data.addresses }));
       toast.success(editing ? 'Address updated' : 'Address added');
       setShowForm(false);
@@ -84,7 +103,7 @@ export default function AddressesPage() {
                 <div><label className={lbl}>City *</label><input value={form.city} onChange={e => setForm((f:any) => ({...f, city:e.target.value}))} className={inp} required /></div>
                 <div><label className={lbl}>State *</label>
                   <select value={form.state} onChange={e => setForm((f:any) => ({...f, state:e.target.value}))} className={inp}>
-                    {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                    {ALL_INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
                 <div className="md:col-span-2">

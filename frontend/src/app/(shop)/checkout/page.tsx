@@ -9,8 +9,7 @@ import api from '../../../lib/api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { getImageUrl } from '../../../lib/utils';
-
-const INDIAN_STATES = ['Andhra Pradesh','Delhi','Gujarat','Karnataka','Kerala','Maharashtra','Punjab','Rajasthan','Tamil Nadu','Telangana','Uttar Pradesh','West Bengal'];
+import { ALL_INDIAN_STATES, validateCityAndState } from '../../../lib/locationUtils';
 
 export default function CheckoutPage() {
   const { items, subtotal, shippingCharge, tax, grandTotal, clear } = useCart();
@@ -51,6 +50,13 @@ export default function CheckoutPage() {
     const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
     if (cleanPhone.length !== 10) {
       toast.error('Please enter a valid 10-digit phone number in shipping address');
+      return;
+    }
+
+    // Validate city matches selected state
+    const cityCheck = validateCityAndState(address.city, address.state);
+    if (!cityCheck.isValid) {
+      toast.error(cityCheck.message || 'City does not match the selected state.');
       return;
     }
 
@@ -190,11 +196,28 @@ export default function CheckoutPage() {
                     <div><label className="block text-[10px] text-[rgba(255,255,255,0.4)] tracking-widest uppercase mb-2">City *</label><input name="city" value={address.city} onChange={handleAddressChange} className={inputCls} placeholder="City" required /></div>
                     <div><label className="block text-[10px] text-[rgba(255,255,255,0.4)] tracking-widest uppercase mb-2">State *</label>
                       <select name="state" value={address.state} onChange={handleAddressChange} className={inputCls}>
-                        {INDIAN_STATES.map(s=><option key={s} value={s}>{s}</option>)}
+                        {ALL_INDIAN_STATES.map(s=><option key={s} value={s}>{s}</option>)}
                       </select>
                     </div>
                   </div>
-                  <button onClick={()=>setStep(2)} className="btn-luxury mt-6 px-10">Continue to Payment →</button>
+                  <button onClick={() => {
+                    if (!address.fullName || !address.phone || !address.line1 || !address.city || !address.state || !address.pincode) {
+                      toast.error('Please fill in all required shipping address fields.');
+                      return;
+                    }
+                    const phoneDigits = (address.phone || '').replace(/\D/g, '');
+                    const cleanPhone = (phoneDigits.length === 12 && phoneDigits.startsWith('91')) ? phoneDigits.slice(2) : ((phoneDigits.length === 11 && phoneDigits.startsWith('0')) ? phoneDigits.slice(1) : phoneDigits);
+                    if (cleanPhone.length !== 10) {
+                      toast.error('Please enter a valid 10-digit phone number');
+                      return;
+                    }
+                    const cityCheck = validateCityAndState(address.city, address.state);
+                    if (!cityCheck.isValid) {
+                      toast.error(cityCheck.message || 'City does not match the selected state.');
+                      return;
+                    }
+                    setStep(2);
+                  }} className="btn-luxury mt-6 px-10">Continue to Payment →</button>
                 </div>
               )}
 
