@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import api from '../lib/api';
+import { getImageUrl } from '../lib/utils';
 import toast from 'react-hot-toast';
 
 interface CustomField { name: string; type: string; label: string; options?: string[]; required: boolean; }
@@ -200,7 +201,7 @@ export default function ProductForm({ productId }: Props) {
           <div className="grid grid-cols-6 gap-3 mb-4">
             {existingImages.map(img => (
               <div key={img.publicId} className="relative aspect-square border border-[rgba(212,175,55,0.1)] group">
-                <img src={img.url} alt="" className="w-full h-full object-cover" />
+                <img src={getImageUrl(img.url)} alt="" className="w-full h-full object-cover" />
                 <button type="button" onClick={() => removeExistingImage(img.publicId)} className="absolute top-1 right-1 w-5 h-5 bg-black/70 text-red-400 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
               </div>
             ))}

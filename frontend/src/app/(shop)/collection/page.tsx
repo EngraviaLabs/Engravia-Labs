@@ -5,6 +5,7 @@ import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 import CartDrawer from '../../../components/ui/CartDrawer';
 import { useCategories } from '../../../hooks/useProducts';
+import { getImageUrl } from '../../../lib/utils';
 
 export default function CollectionsPage() {
   const { data: categories, isLoading } = useCategories();
@@ -43,9 +44,10 @@ export default function CollectionsPage() {
                 >
                   {cat.image?.url ? (
                     <Image
-                      src={cat.image.url}
+                      src={getImageUrl(cat.image.url)}
                       alt={cat.name}
                       fill
+                      unoptimized
                       className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500"
                       sizes="(max-width: 768px) 50vw, 25vw"
                     />

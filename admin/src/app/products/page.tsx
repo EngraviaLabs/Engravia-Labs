@@ -6,6 +6,7 @@ import DataTable from '../../components/DataTable';
 import { Pagination } from '../../components/UIPrimitives';
 import api from '../../lib/api';
 import Link from 'next/link';
+import { getImageUrl } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
@@ -53,7 +54,7 @@ export default function ProductsPage() {
             key: 'product', label: 'Product', render: (p: any) => (
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#111] border border-[rgba(212,175,55,0.1)] flex-shrink-0 overflow-hidden">
-                  {p.images?.[0] ? <img src={p.images[0].url} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px] text-[#D4AF37] font-cinzel">EL</div>}
+                  {p.images?.[0] ? <img src={getImageUrl(p.images[0].url)} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px] text-[#D4AF37] font-cinzel">EL</div>}
                 </div>
                 <div className="min-w-0">
                   <div className="text-white truncate max-w-[220px]">{p.name}</div>

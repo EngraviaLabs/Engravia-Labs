@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getImageUrl } from '../../lib/utils';
 
 interface ImageZoomProps {
   src: string;
@@ -10,6 +11,7 @@ interface ImageZoomProps {
 
 export default function ImageZoom({ src, alt, className = '' }: ImageZoomProps) {
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0, show: false });
+  const imageUrl = getImageUrl(src);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -29,9 +31,10 @@ export default function ImageZoom({ src, alt, className = '' }: ImageZoomProps) 
       onMouseLeave={handleMouseLeave}
     >
       <Image
-        src={src}
+        src={imageUrl}
         alt={alt}
         fill
+        unoptimized
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         sizes="50vw"
         priority
@@ -40,7 +43,7 @@ export default function ImageZoom({ src, alt, className = '' }: ImageZoomProps) 
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-200 z-10"
           style={{
-            backgroundImage: `url(${src})`,
+            backgroundImage: `url(${imageUrl})`,
             backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
             backgroundSize: '250%',
             backgroundRepeat: 'no-repeat',

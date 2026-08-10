@@ -14,26 +14,6 @@ const isCloudinaryConfigured = Boolean(
   !process.env.CLOUDINARY_API_SECRET.includes('placeholder')
 );
 
-const getBackendUrl = () => {
-  return process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}`;
-};
-
-const createLocalStorage = (folder: string) => {
-  const uploadDir = path.join(process.cwd(), 'uploads', folder);
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-  return multer.diskStorage({
-    destination: (_req, _file, cb) => cb(null, uploadDir),
-    filename: (_req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const ext = path.extname(file.originalname) || '.jpg';
-      const filename = `${folder}-${uniqueSuffix}${ext}`;
-      cb(null, filename);
-    },
-  });
-};
-
 const createStorage = (folder: string) => {
   if (isCloudinaryConfigured) {
     return new CloudinaryStorage({
@@ -46,20 +26,42 @@ const createStorage = (folder: string) => {
     });
   }
 
-  const localStorage = createLocalStorage(folder);
+  const uploadDir = path.resolve(__dirname, '../../uploads', folder);
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+
   return {
-    _handleFile: (req: any, file: Express.Multer.File, cb: any) => {
-      localStorage._handleFile(req, file, (err: any, info: any) => {
-        if (err) return cb(err);
-        const hostUrl = getBackendUrl();
-        const relativeUrl = `/uploads/${folder}/${info.filename}`;
-        info.path = `${hostUrl}${relativeUrl}`;
-        info.filename = `uploads/${folder}/${info.filename}`;
-        cb(null, info);
+    _handleFile: (_req: any, file: Express.Multer.File, cb: any) => {
+      const chunks: Buffer[] = [];
+      file.stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+      file.stream.on('end', () => {
+        const buffer = Buffer.concat(chunks);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = path.extname(file.originalname) || '.jpg';
+        const filename = `${folder}-${uniqueSuffix}${ext}`;
+        const filePath = path.join(uploadDir, filename);
+
+        fs.writeFile(filePath, buffer, (err) => {
+          if (err) console.warn('Disk save warning:', err);
+        });
+
+        let fileUrl = `/uploads/${folder}/${filename}`;
+        if (buffer.length <= 4 * 1024 * 1024) {
+          const mime = file.mimetype || 'image/jpeg';
+          fileUrl = `data:${mime};base64,${buffer.toString('base64')}`;
+        }
+
+        cb(null, {
+          path: fileUrl,
+          filename: `uploads/${folder}/${filename}`,
+          size: buffer.length,
+        });
       });
+      file.stream.on('error', (err: any) => cb(err));
     },
-    _removeFile: (req: any, file: Express.Multer.File, cb: any) => {
-      localStorage._removeFile(req, file, cb);
+    _removeFile: (_req: any, _file: Express.Multer.File, cb: any) => {
+      cb(null);
     },
   };
 };

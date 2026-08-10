@@ -5,7 +5,7 @@ import AdminShell from '../../components/AdminShell';
 import Modal from '../../components/Modal';
 import api from '../../lib/api';
 import toast from 'react-hot-toast';
-import Image from 'next/image';
+import { getImageUrl } from '../../lib/utils';
 
 interface CategoryForm {
   name: string; description: string; displayOrder: string; isVisible: boolean;
@@ -78,7 +78,7 @@ export default function CategoriesPage() {
             <div key={cat._id} className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] hover:border-[rgba(212,175,55,0.3)] transition-colors overflow-hidden">
               <div className="aspect-video bg-[#111] relative flex items-center justify-center">
                 {cat.image?.url ? (
-                  <Image src={cat.image.url} alt={cat.name} fill className="object-cover" sizes="25vw" />
+                  <img src={getImageUrl(cat.image.url)} alt={cat.name} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-2xl text-[rgba(212,175,55,0.3)]">◈</span>
                 )}

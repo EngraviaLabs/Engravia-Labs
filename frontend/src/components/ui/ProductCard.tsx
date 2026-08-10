@@ -7,6 +7,7 @@ import { useCart } from '../../hooks/useCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../store/slices/authSlice';
 import api from '../../lib/api';
+import { getImageUrl } from '../../lib/utils';
 import toast from 'react-hot-toast';
 
 interface Props { product: Product; }
@@ -43,7 +44,7 @@ export default function ProductCard({ product }: Props) {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-[#111] rounded-t-xl">
         {primaryImage && !imgError ? (
-          <Image src={primaryImage.url} alt={primaryImage.alt || product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" onError={() => setImgError(true)} sizes="(max-width:768px) 50vw, 25vw" />
+          <Image src={getImageUrl(primaryImage.url)} alt={primaryImage.alt || product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" onError={() => setImgError(true)} unoptimized sizes="(max-width:768px) 50vw, 25vw" />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1e1e1e] to-[#111]">
             <div className="border border-[rgba(212,175,55,0.2)] p-6 text-center">

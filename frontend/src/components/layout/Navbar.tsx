@@ -36,8 +36,8 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-3.5 group">
           <img 
             src="/images/logo-emblem.png" 
-            alt="Engravia Labs Monogram" 
-            className="h-10 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300" 
+            alt="Engravia Labs Seal" 
+            className="h-11 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300" 
           />
           <div className="flex flex-col">
             <span className="font-cinzel text-[17px] font-bold tracking-[3px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors">
