@@ -26,13 +26,11 @@ export default function ContactPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      // Reuses the custom-orders endpoint pattern as a generic contact intake;
-      // in production this would hit a dedicated /api/contact route.
-      await new Promise(r => setTimeout(r, 900));
+      const { data } = await api.post('/contact', form);
       setSent(true);
-      toast.success('Message sent! We\'ll respond within 24 hours.');
-    } catch {
-      toast.error('Failed to send message. Please try WhatsApp or email directly.');
+      toast.success(data.message || 'Message sent! We\'ll respond within 24 hours.');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to send message. Please try WhatsApp or email directly.');
     } finally {
       setLoading(false);
     }

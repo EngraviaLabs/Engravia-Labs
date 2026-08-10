@@ -13,6 +13,7 @@ import blogRoutes from './blog.routes';
 import paymentRoutes from './payment.routes';
 import analyticsRoutes from './analytics.routes';
 import seoRoutes from './seo.routes';
+import contactRoutes from './contact.routes';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/blogs', blogRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/admin/analytics', analyticsRoutes);
 router.use('/seo', seoRoutes);
+router.use('/contact', contactRoutes);
 
 export default router;
