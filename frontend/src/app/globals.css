@@ -15,10 +15,7 @@
 
 html { scroll-behavior: smooth; }
 
-body { background: var(--black); color: #fff; font-family: var(--font-poppins); padding-bottom: 60px; }
-@media (min-width: 1024px) {
-  body { padding-bottom: 0; }
-}
+body { background: var(--black); color: #fff; font-family: var(--font-poppins); }
 
 .font-cinzel { font-family: var(--font-cinzel); }
 .font-poppins { font-family: var(--font-poppins); }

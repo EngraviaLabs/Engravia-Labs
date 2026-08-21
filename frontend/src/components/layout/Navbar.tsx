@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCartCount, toggleCart } from '../../store/slices/cartSlice';
 import { selectUser, clearCredentials } from '../../store/slices/authSlice';
-import MobileBottomNav from './MobileBottomNav';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -179,7 +178,6 @@ export default function Navbar() {
           </aside>
         </>
       )}
-      <MobileBottomNav />
     </header>
   );
 }

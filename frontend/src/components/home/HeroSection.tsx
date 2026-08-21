@@ -50,10 +50,14 @@ export default function HeroSection({ banner }: { banner?: any }) {
                 alt="Engravia Labs Precision Laser Engraving"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 pr-24 sm:pr-28 text-left">
-                <span className="text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#D4AF37] font-semibold block mb-1">Precision Laser Technology</span>
-                <h3 className="font-cinzel text-base sm:text-lg font-bold text-white leading-snug">Permanent Artistry in Stone & Metal</h3>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7 pr-24 sm:pr-32 text-left">
+                <span className="text-[10px] sm:text-[11px] lg:text-[12px] tracking-[2.5px] sm:tracking-[3.5px] lg:tracking-[4px] uppercase text-[#D4AF37] font-bold block mb-1.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                  <span className="text-[#D4AF37] mr-1.5">✦</span>Precision Laser Technology
+                </span>
+                <h3 className="font-cinzel text-base sm:text-lg lg:text-xl font-bold text-white leading-snug drop-shadow-[0_3px_12px_rgba(0,0,0,0.95)]">
+                  Permanent Artistry in Stone & Metal
+                </h3>
               </div>
             </div>
             {/* Prominent 4.9 Star Rating Badge */}
