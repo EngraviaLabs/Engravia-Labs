@@ -27,10 +27,10 @@ export default function HeroSection({ banner }: { banner?: any }) {
           </h1>
           <p className="text-sm sm:text-[15px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-8 sm:mb-10 max-w-[480px]">{subtitle}</p>
           <div className="flex flex-row items-center gap-2 sm:gap-4 mb-10 sm:mb-14 relative z-20 w-full max-w-full">
-            <Link href={banner?.ctaLink || "/collection"} className="btn-luxury flex-1 min-w-0 text-center px-1.5 xs:px-3 sm:px-8 py-3 sm:py-3.5 text-[10px] xs:text-[11px] sm:text-xs tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer overflow-hidden text-ellipsis">
+            <Link href={banner?.ctaLink || "/collection"} className="btn-luxury flex-1 text-center px-2 sm:px-8 py-3.5 text-xs tracking-normal xs:tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer">
               {banner?.ctaText || "Shop Collection"}
             </Link>
-            <Link href={banner?.ctaSecondaryLink || "/custom-order"} className="btn-outline-luxury flex-1 min-w-0 text-center px-1.5 xs:px-3 sm:px-8 py-3 sm:py-3.5 text-[10px] xs:text-[11px] sm:text-xs tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer overflow-hidden text-ellipsis">
+            <Link href={banner?.ctaSecondaryLink || "/custom-order"} className="btn-outline-luxury flex-1 text-center px-2 sm:px-8 py-3.5 text-xs tracking-normal xs:tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer">
               {banner?.ctaSecondaryText || "Custom Order"}
             </Link>
           </div>
