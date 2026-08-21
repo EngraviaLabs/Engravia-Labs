@@ -89,13 +89,13 @@ export default function CheckoutPage() {
           config: paymentMethod === 'gpay' ? {
             display: {
               blocks: {
-                banks: {
-                  name: 'Pay using Google Pay / UPI',
+                upi: {
+                  name: 'Pay via Google Pay / UPI QR Code / UPI ID',
                   instruments: [{ method: 'upi' }]
                 }
               },
-              sequence: ['block.banks'],
-              preferences: { show_default_blocks: true }
+              sequence: ['block.upi'],
+              preferences: { show_default_blocks: false }
             }
           } : undefined,
           handler: async (response: any) => {
@@ -124,6 +124,7 @@ export default function CheckoutPage() {
             name: address.fullName,
             contact: cleanPhone,
             email: user?.email || '',
+            method: paymentMethod === 'gpay' ? 'upi' : undefined,
           },
           theme: { color: '#D4AF37' },
         };
@@ -226,14 +227,28 @@ export default function CheckoutPage() {
                 <div className="bg-[#1A1A1A] border border-[rgba(212,175,55,0.1)] p-7">
                   <div className="font-cinzel text-[16px] font-semibold text-white mb-6">Payment Method</div>
                   <div className="space-y-3 mb-8">
-                    {[['razorpay','Razorpay (Cards, Net Banking, Wallets)','Recommended'],['gpay','Google Pay / UPI','Instant & Fast Payment'],['cod','Cash on Delivery','Pay on delivery']].map(([val,label,note])=>(
-                      <label key={val} className={`flex items-center gap-4 p-4 border cursor-pointer transition-all ${paymentMethod===val?'border-[#D4AF37] bg-[rgba(212,175,55,0.05)]':'border-[rgba(212,175,55,0.1)] hover:border-[rgba(212,175,55,0.3)]'}`}>
-                        <input type="radio" name="payment" value={val} checked={paymentMethod===val} onChange={()=>setPaymentMethod(val as any)} className="accent-[#D4AF37]" />
-                        <div>
-                          <div className="text-[13px] font-semibold text-white">{label}</div>
-                          {note && <div className="text-[11px] text-[rgba(212,175,55,0.6)]">{note}</div>}
-                        </div>
-                      </label>
+                    {[['razorpay','Razorpay (Cards, Net Banking, Wallets)','All Cards, Net Banking, Pay Later & Wallets'],['gpay','Google Pay / UPI (QR Code & UPI ID)','Scan QR Code with GPay/PhonePe/Paytm or Enter UPI ID'],['cod','Cash on Delivery','Pay on delivery']].map(([val,label,note])=>(
+                      <div key={val}>
+                        <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-all ${paymentMethod===val?'border-[#D4AF37] bg-[rgba(212,175,55,0.05)]':'border-[rgba(212,175,55,0.1)] hover:border-[rgba(212,175,55,0.3)]'}`}>
+                          <input type="radio" name="payment" value={val} checked={paymentMethod===val} onChange={()=>setPaymentMethod(val as any)} className="accent-[#D4AF37]" />
+                          <div>
+                            <div className="text-[13px] font-semibold text-white">{label}</div>
+                            {note && <div className="text-[11px] text-[rgba(212,175,55,0.6)]">{note}</div>}
+                          </div>
+                        </label>
+                        {val === 'gpay' && paymentMethod === 'gpay' && (
+                          <div className="mt-2 ml-8 p-3 bg-[rgba(212,175,55,0.04)] border border-[rgba(212,175,55,0.2)] rounded text-[12px] text-[rgba(255,255,255,0.8)] space-y-1">
+                            <div className="font-semibold text-[#D4AF37] flex items-center gap-2">
+                              <span>⚡ Direct UPI & QR Code Portal</span>
+                            </div>
+                            <p>You can make instant payment using either of two options on the next screen:</p>
+                            <ul className="list-disc list-inside space-y-0.5 text-[11px] text-[rgba(255,255,255,0.65)]">
+                              <li><strong>Scan QR Code:</strong> Scan live QR with Google Pay, PhonePe, Paytm, or BHIM.</li>
+                              <li><strong>Enter UPI ID / VPA:</strong> Type your UPI ID (e.g. <code>username@okaxis</code>) for direct payment collect.</li>
+                            </ul>
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                   <div className="flex gap-3">

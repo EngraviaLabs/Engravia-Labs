@@ -43,6 +43,9 @@ const seedSettings = async () => {
     { key: 'order_email_notifications', value: true,                                                        group: 'email',    label: 'Send Order Email Notifications', type: 'boolean' },
     { key: 'review_auto_approve',  value: false,                                                            group: 'general',  label: 'Auto-approve Reviews',         type: 'boolean' },
     { key: 'max_images_per_product', value: 10,                                                             group: 'general',  label: 'Max Images Per Product',       type: 'number' },
+    { key: 'store_upi_id',         value: 'engravialabs@upi',                                               group: 'payment',  label: 'Store UPI ID / VPA',           type: 'string' },
+    { key: 'enable_direct_upi_qr', value: true,                                                             group: 'payment',  label: 'Enable Direct UPI QR & VPA',   type: 'boolean' },
+    { key: 'razorpay_key_id',      value: 'rzp_test_T4jYhLKhRcdUW5',                                        group: 'payment',  label: 'Razorpay Key ID',              type: 'string' },
   ]);
 
   return true;

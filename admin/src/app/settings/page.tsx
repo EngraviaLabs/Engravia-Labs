@@ -54,6 +54,14 @@ const SETTING_GROUPS = [
     ],
   },
   {
+    key: 'payment', label: 'Payment & UPI', icon: '💳',
+    fields: [
+      { key: 'store_upi_id', label: 'Store UPI ID / VPA (e.g. engravialabs@upi)', type: 'text', default: 'engravialabs@upi' },
+      { key: 'enable_direct_upi_qr', label: 'Enable UPI QR & VPA Payment Gateway', type: 'text', default: 'true' },
+      { key: 'razorpay_key_id', label: 'Razorpay Key ID', type: 'text', default: 'rzp_test_T4jYhLKhRcdUW5' },
+    ],
+  },
+  {
     key: 'faqs', label: 'Manage FAQs', icon: '❓',
     fields: [
       { key: 'faqs_content', label: 'Frequently Asked Questions (Q: Question | A: Answer)', type: 'textarea', default: 'Q: How long does custom stone engraving take?\nA: Design proofs are shared within 24-48 hours. Once approved, production and finishing take 2-4 business days.\n\nQ: Is black marble suitable for outdoor name plates?\nA: Yes! All our stones are treated with weather-proof, UV-resistant sealing.\n\nQ: Do you deliver across India & internationally?\nA: Yes, we ship insured packages across India and globally.' },
