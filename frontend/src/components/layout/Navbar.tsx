@@ -31,16 +31,16 @@ export default function Navbar() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0D0D0D]/98 shadow-2xl' : 'bg-[#0D0D0D]/95'} border-b border-[rgba(212,175,55,0.15)] backdrop-blur-lg`}>
-      <nav className="max-w-[1280px] mx-auto px-6 h-[72px] flex items-center justify-between">
+      <nav className="max-w-[1280px] mx-auto px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3.5 group">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3.5 group shrink-0 min-w-0">
           <img 
             src="/images/logo-emblem.png" 
             alt="Engravia Labs Seal" 
-            className="h-11 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300" 
+            className="h-8 xs:h-9 sm:h-11 w-auto object-contain filter drop-shadow-[0_0_12px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.7)] transition-all duration-300 shrink-0" 
           />
-          <div className="flex flex-col">
-            <span className="font-cinzel text-[17px] font-bold tracking-[3px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors">
+          <div className="flex flex-col shrink-0 min-w-0">
+            <span className="font-cinzel text-[13px] xs:text-[15px] sm:text-[17px] font-bold tracking-[1.5px] sm:tracking-[3px] text-[#D4AF37] leading-none group-hover:text-[#F5E6A3] transition-colors whitespace-nowrap">
               ENGRAVIA <span className="text-white">LABS</span>
             </span>
             <div className="w-full flex justify-between items-center text-[7.5px] font-medium text-[rgba(255,255,255,0.5)] uppercase mt-1 hidden sm:flex select-none">
@@ -64,32 +64,32 @@ export default function Navbar() {
           ))}
         </ul>
         {/* Icons */}
-        <div className="flex items-center gap-2.5 sm:gap-4 lg:gap-5">
-          <button onClick={() => setSearchOpen(!searchOpen)} className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Search">
+        <div className="flex items-center gap-1.5 xs:gap-2.5 sm:gap-4 lg:gap-5 shrink-0">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-sm sm:text-base lg:text-lg p-1 shrink-0" aria-label="Search">
             🔍
           </button>
-          <Link href="/account/wishlist" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Wishlist">
+          <Link href="/account/wishlist" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-sm sm:text-base lg:text-lg p-1 shrink-0" aria-label="Wishlist">
             ♡
           </Link>
-          <button onClick={() => dispatch(toggleCart())} className="relative text-[rgba(255,255,255,0.8)] hover:text-[#D4AF37] transition-colors p-1" aria-label="Cart">
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
+          <button onClick={() => dispatch(toggleCart())} className="relative text-[rgba(255,255,255,0.8)] hover:text-[#D4AF37] transition-colors p-1 shrink-0" aria-label="Cart">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 fill-current" viewBox="0 0 24 24">
               <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-[#D4AF37] text-[#0D0D0D] text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-md">
+              <span className="absolute -top-1.5 -right-1.5 bg-[#D4AF37] text-[#0D0D0D] text-[9px] font-extrabold w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center shadow-md">
                 {cartCount > 9 ? '9+' : cartCount}
               </span>
             )}
           </button>
           {user ? (
-            <Link href="/account/profile" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-base sm:text-lg p-1" aria-label="Account">
+            <Link href="/account/profile" className="text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] transition-colors text-sm sm:text-base lg:text-lg p-1 shrink-0" aria-label="Account">
               👤
             </Link>
           ) : (
-            <Link href="/auth/login" className="btn-outline-luxury text-[10px] sm:text-[11px] py-1.5 px-2.5 sm:px-4">Sign In</Link>
+            <Link href="/auth/login" className="btn-outline-luxury text-[10px] sm:text-[11px] py-1.5 px-2.5 sm:px-4 whitespace-nowrap shrink-0">Sign In</Link>
           )}
           {/* Hamburger */}
-          <button className="lg:hidden text-white p-1 text-xl" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">☰</button>
+          <button className="lg:hidden text-white p-1 text-lg sm:text-xl shrink-0" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">☰</button>
         </div>
       </nav>
 
