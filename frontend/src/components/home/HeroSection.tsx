@@ -26,9 +26,13 @@ export default function HeroSection({ banner }: { banner?: any }) {
             {title.split('\n')[0]}<br />{title.split('\n')[1]?.split(' ').map((w: string, i: number) => i === (title.split('\n')[1].split(' ').length-1) ? <span key={i} className="text-[#D4AF37]"> {w}</span> : (i===0?w:' '+w))}
           </h1>
           <p className="text-[15px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-10 max-w-[480px]">{subtitle}</p>
-          <div className="flex flex-wrap gap-4 mb-14 relative z-20">
-            <Link href="/collection" className="btn-luxury inline-block cursor-pointer">Shop Collection</Link>
-            <Link href="/custom-order" className="btn-outline-luxury inline-block cursor-pointer">Custom Order</Link>
+          <div className="flex flex-row items-center gap-2.5 sm:gap-4 mb-14 relative z-20 w-full sm:w-auto">
+            <Link href={banner?.ctaLink || "/collection"} className="btn-luxury flex-1 sm:flex-none text-center px-2.5 xs:px-4 sm:px-8 py-3.5 text-[10.5px] xs:text-[11.5px] sm:text-xs tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer">
+              {banner?.ctaText || "Shop Collection"}
+            </Link>
+            <Link href={banner?.ctaSecondaryLink || "/custom-order"} className="btn-outline-luxury flex-1 sm:flex-none text-center px-2.5 xs:px-4 sm:px-8 py-3.5 text-[10.5px] xs:text-[11.5px] sm:text-xs tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer">
+              {banner?.ctaSecondaryText || "Custom Order"}
+            </Link>
           </div>
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-10 border-t border-[rgba(212,175,55,0.12)]">
