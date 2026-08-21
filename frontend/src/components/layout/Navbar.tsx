@@ -113,15 +113,70 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Menu */}
+      {/* Mobile Slide-Over Side Drawer Menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-[#111] border-t border-[rgba(212,175,55,0.1)]">
-          {navLinks.map(link => (
-            <Link key={link.href} href={link.href} className="block px-6 py-4 text-[rgba(255,255,255,0.7)] hover:text-[#D4AF37] text-sm font-medium tracking-widest uppercase border-b border-[rgba(255,255,255,0.04)] transition-colors" onClick={() => setMenuOpen(false)}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        <>
+          {/* Backdrop Overlay */}
+          <div className="lg:hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 transition-opacity duration-300" onClick={() => setMenuOpen(false)} />
+
+          {/* Side Drawer Panel */}
+          <aside className="lg:hidden fixed top-0 left-0 h-full w-[290px] sm:w-[320px] bg-[#0D0D0D] border-r border-[rgba(212,175,55,0.2)] z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-out">
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-[rgba(212,175,55,0.15)] bg-[#111]">
+              <div className="flex items-center gap-3">
+                <img src="/images/logo-emblem.png" alt="Engravia Labs Seal" className="h-8 w-auto object-contain" />
+                <span className="font-cinzel text-sm font-bold tracking-[2px] text-[#D4AF37]">
+                  ENGRAVIA <span className="text-white">LABS</span>
+                </span>
+              </div>
+              <button onClick={() => setMenuOpen(false)} className="text-[rgba(255,255,255,0.5)] hover:text-[#D4AF37] text-2xl p-1 transition-colors" aria-label="Close menu">✕</button>
+            </div>
+
+            {/* Menu Links */}
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+              {[
+                { href: '/product', label: 'Products', icon: '🛍️' },
+                { href: '/collection', label: 'Collections', icon: '💎' },
+                { href: '/custom-order', label: 'Custom Order', icon: '🛠️' },
+                { href: '/contact', label: 'Contact Us', icon: '✉️' },
+                { href: '/about', label: 'About Us', icon: '📖' },
+                { href: '/blog', label: 'Blog', icon: '✍️' },
+              ].map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3.5 px-4 py-3.5 rounded-lg text-[rgba(255,255,255,0.85)] hover:text-[#D4AF37] hover:bg-[rgba(212,175,55,0.06)] border border-transparent hover:border-[rgba(212,175,55,0.15)] transition-all text-[13px] font-medium tracking-[1.5px] uppercase font-poppins"
+                >
+                  <span className="text-base">{link.icon}</span>
+                  <span>{link.label}</span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Drawer Quick Action Footer */}
+            <div className="p-5 border-t border-[rgba(212,175,55,0.15)] bg-[#111] space-y-3">
+              <div className="grid grid-cols-2 gap-2 text-[11px]">
+                <Link href="/account/wishlist" onClick={() => setMenuOpen(false)} className="flex items-center justify-center gap-2 p-2.5 bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] rounded-lg text-white hover:text-[#D4AF37] transition-all">
+                  <span>♡</span> Wishlist
+                </Link>
+                <button onClick={() => { setMenuOpen(false); dispatch(toggleCart()); }} className="flex items-center justify-center gap-2 p-2.5 bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] rounded-lg text-white hover:text-[#D4AF37] transition-all">
+                  <span>🛒</span> Cart ({cartCount})
+                </button>
+              </div>
+
+              {user ? (
+                <Link href="/account/profile" onClick={() => setMenuOpen(false)} className="btn-luxury w-full block text-center py-2.5 text-[11px]">
+                  👤 My Account
+                </Link>
+              ) : (
+                <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="btn-luxury w-full block text-center py-2.5 text-[11px]">
+                  Sign In / Register →
+                </Link>
+              )}
+            </div>
+          </aside>
+        </>
       )}
     </header>
   );
