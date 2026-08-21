@@ -113,70 +113,82 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Slide-Over Side Drawer Menu */}
+      {/* Mobile Full-Width Menu List */}
       {menuOpen && (
-        <>
-          {/* Backdrop Overlay */}
-          <div className="lg:hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 transition-opacity duration-300" onClick={() => setMenuOpen(false)} />
+        <div className="lg:hidden bg-[#0D0D0D] border-t border-b border-[rgba(212,175,55,0.2)] shadow-2xl animate-fadeInUp">
+          <div className="max-w-[1280px] mx-auto px-5 py-6 space-y-2">
+            {[
+              { href: '/product', label: 'Products', icon: '🛍️', note: 'Explore Luxury Stone Products' },
+              { href: '/collection', label: 'Collections', icon: '💎', note: 'Curated Stone Engraving Collections' },
+              { href: '/custom-order', label: 'Custom Order', icon: '🛠️', note: 'Bespoke Personalized Engravings' },
+              { href: '/about', label: 'About Us', icon: '📖', note: 'Our Heritage & Artisans' },
+              { href: '/blog', label: 'Blog', icon: '✍️', note: 'Guides, Care & Stories' },
+              { href: '/contact', label: 'Contact Us', icon: '✉️', note: 'Get in touch with our studio' },
+            ].map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between p-3.5 rounded-xl bg-[#1A1A1A]/80 hover:bg-[#1A1A1A] border border-[rgba(212,175,55,0.08)] hover:border-[rgba(212,175,55,0.3)] transition-all group"
+              >
+                <div className="flex items-center gap-3.5">
+                  <span className="text-xl p-2 rounded-lg bg-[#0D0D0D] border border-[rgba(212,175,55,0.15)]">{link.icon}</span>
+                  <div>
+                    <div className="font-cinzel text-[13px] font-bold text-white group-hover:text-[#D4AF37] transition-colors">{link.label}</div>
+                    <div className="text-[11px] text-[rgba(255,255,255,0.4)]">{link.note}</div>
+                  </div>
+                </div>
+                <span className="text-[#D4AF37] text-sm group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            ))}
 
-          {/* Side Drawer Panel */}
-          <aside className="lg:hidden fixed top-0 left-0 h-full w-[290px] sm:w-[320px] bg-[#0D0D0D] border-r border-[rgba(212,175,55,0.2)] z-50 flex flex-col shadow-2xl transition-transform duration-300 ease-out">
-            {/* Drawer Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-[rgba(212,175,55,0.15)] bg-[#111]">
-              <div className="flex items-center gap-3">
-                <img src="/images/logo-emblem.png" alt="Engravia Labs Seal" className="h-8 w-auto object-contain" />
-                <span className="font-cinzel text-sm font-bold tracking-[2px] text-[#D4AF37]">
-                  ENGRAVIA <span className="text-white">LABS</span>
-                </span>
-              </div>
-              <button onClick={() => setMenuOpen(false)} className="text-[rgba(255,255,255,0.5)] hover:text-[#D4AF37] text-2xl p-1 transition-colors" aria-label="Close menu">✕</button>
+            {/* Quick Action Buttons */}
+            <div className="pt-3 grid grid-cols-2 gap-3">
+              <Link
+                href="/account/wishlist"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] text-white hover:text-[#D4AF37] text-xs font-semibold uppercase tracking-wider transition-all"
+              >
+                <span>♡</span> Wishlist
+              </Link>
+              <button
+                onClick={() => { setMenuOpen(false); dispatch(toggleCart()); }}
+                className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] text-white hover:text-[#D4AF37] text-xs font-semibold uppercase tracking-wider transition-all"
+              >
+                <span>🛒</span> Cart ({cartCount})
+              </button>
             </div>
 
-            {/* Menu Links */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-              {[
-                { href: '/product', label: 'Products', icon: '🛍️' },
-                { href: '/collection', label: 'Collections', icon: '💎' },
-                { href: '/custom-order', label: 'Custom Order', icon: '🛠️' },
-                { href: '/contact', label: 'Contact Us', icon: '✉️' },
-                { href: '/about', label: 'About Us', icon: '📖' },
-                { href: '/blog', label: 'Blog', icon: '✍️' },
-              ].map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-3.5 px-4 py-3.5 rounded-lg text-[rgba(255,255,255,0.85)] hover:text-[#D4AF37] hover:bg-[rgba(212,175,55,0.06)] border border-transparent hover:border-[rgba(212,175,55,0.15)] transition-all text-[13px] font-medium tracking-[1.5px] uppercase font-poppins"
-                >
-                  <span className="text-base">{link.icon}</span>
-                  <span>{link.label}</span>
-                </Link>
-              ))}
-            </div>
-
-            {/* Drawer Quick Action Footer */}
-            <div className="p-5 border-t border-[rgba(212,175,55,0.15)] bg-[#111] space-y-3">
-              <div className="grid grid-cols-2 gap-2 text-[11px]">
-                <Link href="/account/wishlist" onClick={() => setMenuOpen(false)} className="flex items-center justify-center gap-2 p-2.5 bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] rounded-lg text-white hover:text-[#D4AF37] transition-all">
-                  <span>♡</span> Wishlist
-                </Link>
-                <button onClick={() => { setMenuOpen(false); dispatch(toggleCart()); }} className="flex items-center justify-center gap-2 p-2.5 bg-[#1A1A1A] border border-[rgba(212,175,55,0.2)] rounded-lg text-white hover:text-[#D4AF37] transition-all">
-                  <span>🛒</span> Cart ({cartCount})
-                </button>
-              </div>
-
+            {/* Account / Guest Authentication */}
+            <div className="pt-2">
               {user ? (
-                <Link href="/account/profile" onClick={() => setMenuOpen(false)} className="btn-luxury w-full block text-center py-2.5 text-[11px]">
-                  👤 My Account
-                </Link>
+                <div className="flex gap-2">
+                  <Link
+                    href="/account/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-luxury flex-1 text-center py-3 text-[11px]"
+                  >
+                    👤 My Profile ({user.name})
+                  </Link>
+                  <button
+                    onClick={() => { setMenuOpen(false); dispatch(clearCredentials()); }}
+                    className="btn-outline-luxury py-3 px-4 text-[11px]"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
-                <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="btn-luxury w-full block text-center py-2.5 text-[11px]">
-                  Sign In / Register →
+                <Link
+                  href="/auth/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-luxury w-full block text-center py-3 text-[11px]"
+                >
+                  🔑 Sign In / Register →
                 </Link>
               )}
             </div>
-          </aside>
-        </>
+          </div>
+        </div>
       )}
     </header>
   );
