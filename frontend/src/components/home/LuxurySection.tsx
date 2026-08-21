@@ -16,11 +16,11 @@ export default function LuxurySection() {
       <div className="max-w-[1280px] mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-20 items-start">
         {/* Pillars */}
         <div>
-          <div className="text-[11px] font-semibold tracking-[5px] uppercase text-[#D4AF37] mb-4 flex items-center gap-3"><span className="block w-10 h-px bg-[rgba(212,175,55,0.4)]" />Our Promise</div>
-          <h2 className="font-cinzel text-3xl lg:text-4xl font-bold text-white mb-8">The Engravia <span className="text-[#D4AF37]">Difference</span></h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="text-[10px] sm:text-[11px] font-semibold tracking-[2px] sm:tracking-[5px] uppercase text-[#D4AF37] mb-4 flex items-center gap-2 sm:gap-3"><span className="block w-6 sm:w-10 h-px bg-[rgba(212,175,55,0.4)] shrink-0" />Our Promise</div>
+          <h2 className="font-cinzel text-2xl xs:text-3xl lg:text-4xl font-bold text-white mb-8">The Engravia <span className="text-[#D4AF37]">Difference</span></h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {pillars.map(p=>(
-              <div key={p.title} className="p-6 border border-[rgba(212,175,55,0.12)] bg-[rgba(212,175,55,0.02)] hover:border-[rgba(212,175,55,0.35)] transition-colors">
+              <div key={p.title} className="p-5 sm:p-6 border border-[rgba(212,175,55,0.12)] bg-[rgba(212,175,55,0.02)] hover:border-[rgba(212,175,55,0.35)] transition-colors">
                 <div className="text-2xl mb-3">{p.icon}</div>
                 <div className="font-cinzel text-[15px] font-semibold text-white mb-2">{p.title}</div>
                 <div className="text-[12px] text-[rgba(255,255,255,0.5)] leading-relaxed">{p.desc}</div>
@@ -30,7 +30,7 @@ export default function LuxurySection() {
         </div>
         {/* Process */}
         <div>
-          <div className="text-[11px] font-semibold tracking-[5px] uppercase text-[#D4AF37] mb-8 flex items-center gap-3"><span className="block w-10 h-px bg-[rgba(212,175,55,0.4)]" />Our Process</div>
+          <div className="text-[10px] sm:text-[11px] font-semibold tracking-[2px] sm:tracking-[5px] uppercase text-[#D4AF37] mb-8 flex items-center gap-2 sm:gap-3"><span className="block w-6 sm:w-10 h-px bg-[rgba(212,175,55,0.4)] shrink-0" />Our Process</div>
           <div className="space-y-0">
             {steps.map((s,i)=>(
               <div key={s.title} className={`flex gap-5 py-6 ${i<steps.length-1?'border-b border-[rgba(212,175,55,0.08)]':''}`}>

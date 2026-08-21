@@ -11,6 +11,11 @@
   --font-poppins: 'Poppins', sans-serif;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
