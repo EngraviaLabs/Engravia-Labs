@@ -38,7 +38,7 @@ const seedSettings = async () => {
     { key: 'youtube_url',          value: 'https://youtube.com/@engravialabs',                              group: 'social',   label: 'YouTube URL',                  type: 'string' },
     { key: 'homepage_hero_heading',value: 'Craft Your Legacy In Black Marble',                              group: 'homepage', label: 'Hero Heading',                 type: 'string' },
     { key: 'homepage_hero_subtext',value: "Bespoke stone engravings that command respect, define spaces, and endure centuries. Handcrafted in Rajasthan's finest studios.", group: 'homepage', label: 'Hero Subtext', type: 'string' },
-    { key: 'homepage_stats',       value: [{ number: '12,000+', label: 'Happy Clients' }, { number: '99.8%', label: 'Satisfaction' }, { number: '48 hrs', label: 'Design Proof' }, { number: 'Lifetime', label: 'Guarantee' }], group: 'homepage', label: 'Hero Stats', type: 'json' },
+    { key: 'homepage_stats',       value: [{ number: '12,000+', label: 'Happy Clients' }, { number: '99.8%', label: 'Satisfaction Rate' }, { number: '48 hrs', label: 'Design Proof' }], group: 'homepage', label: 'Hero Stats', type: 'json' },
     { key: 'maintenance_mode',     value: false,                                                            group: 'general',  label: 'Maintenance Mode',             type: 'boolean' },
     { key: 'order_email_notifications', value: true,                                                        group: 'email',    label: 'Send Order Email Notifications', type: 'boolean' },
     { key: 'review_auto_approve',  value: false,                                                            group: 'general',  label: 'Auto-approve Reviews',         type: 'boolean' },

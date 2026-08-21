@@ -14,7 +14,7 @@ export default function HeroSection({ banner }: { banner?: any }) {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle,rgba(212,175,55,0.1) 0%,transparent 70%)'}} />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle,rgba(212,175,55,0.05) 0%,transparent 70%)'}} />
 
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-10 w-full grid lg:grid-cols-2 gap-16 items-center py-24 pt-32">
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-10 w-full grid lg:grid-cols-2 gap-16 items-center py-28 lg:py-36 pt-36 lg:pt-44">
         {/* Left */}
         <motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:0.7}}>
           <div className="text-[11px] font-semibold tracking-[5px] uppercase text-[#D4AF37] mb-6 flex items-center gap-3">
@@ -31,11 +31,11 @@ export default function HeroSection({ banner }: { banner?: any }) {
             <Link href="/custom-order" className="btn-outline-luxury inline-block cursor-pointer">Custom Order</Link>
           </div>
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-6 pt-10 border-t border-[rgba(212,175,55,0.12)]">
-            {[['12,000+','Happy Clients'],['99.8%','Satisfaction'],['48 hrs','Design Proof'],['Lifetime','Guarantee']].map(([n,l]) => (
-              <div key={l}>
-                <div className="font-cinzel text-[22px] font-bold text-[#D4AF37]">{n}</div>
-                <div className="text-[11px] text-[rgba(255,255,255,0.45)] tracking-widest uppercase mt-1">{l}</div>
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-10 border-t border-[rgba(212,175,55,0.12)]">
+            {[['12,000+','Happy Clients'],['99.8%','Satisfaction Rate'],['48 hrs','Design Proof']].map(([n,l]) => (
+              <div key={l} className="min-w-0">
+                <div className="font-cinzel text-xl sm:text-2xl font-bold text-[#D4AF37]">{n}</div>
+                <div className="text-[10px] sm:text-[11px] text-[rgba(255,255,255,0.45)] tracking-wider uppercase mt-1 leading-tight">{l}</div>
               </div>
             ))}
           </div>
@@ -44,22 +44,25 @@ export default function HeroSection({ banner }: { banner?: any }) {
         {/* Right — Laser Engraving Artwork Image */}
         <motion.div className="flex items-center justify-center" initial={{opacity:0,scale:0.9}} animate={{opacity:1,scale:1}} transition={{duration:0.8,delay:0.2}}>
           <div className="relative max-w-full">
-            <div className="w-[280px] xs:w-[340px] sm:w-[440px] h-[280px] xs:h-[340px] sm:h-[440px] rounded-xl overflow-hidden border border-[rgba(212,175,55,0.3)] shadow-[0_30px_90px_rgba(0,0,0,0.9)] relative group">
+            <div className="w-[300px] xs:w-[360px] sm:w-[460px] lg:w-[500px] h-[300px] xs:h-[360px] sm:h-[460px] lg:h-[500px] rounded-2xl overflow-hidden border border-[rgba(212,175,55,0.3)] shadow-[0_30px_90px_rgba(0,0,0,0.9)] relative group">
               <img
                 src="/images/craft-legacy.jpg"
                 alt="Engravia Labs Precision Laser Engraving"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-left">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 pr-24 sm:pr-28 text-left">
                 <span className="text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#D4AF37] font-semibold block mb-1">Precision Laser Technology</span>
                 <h3 className="font-cinzel text-base sm:text-lg font-bold text-white leading-snug">Permanent Artistry in Stone & Metal</h3>
               </div>
             </div>
-            {/* Badge */}
-            <div className="absolute right-2 bottom-2 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#D4AF37] flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(212,175,55,0.4)] z-20">
-              <div className="font-cinzel text-base sm:text-xl font-black text-[#0D0D0D]">4.9</div>
-              <div className="text-[7px] sm:text-[8px] font-bold text-[#0D0D0D] tracking-wide text-center leading-tight">STAR<br/>RATING</div>
+            {/* Prominent 4.9 Star Rating Badge */}
+            <div className="absolute -bottom-3 -right-3 sm:-bottom-5 sm:-right-5 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#D4AF37] border-4 border-[#0D0D0D] flex flex-col items-center justify-center shadow-[0_12px_40px_rgba(212,175,55,0.5)] z-30 transition-transform duration-300 hover:scale-105">
+              <div className="font-cinzel text-xl sm:text-2xl font-black text-[#0D0D0D] leading-none flex items-center gap-0.5">
+                <span>4.9</span>
+                <span className="text-xs sm:text-sm">★</span>
+              </div>
+              <div className="text-[7.5px] sm:text-[9px] font-extrabold text-[#0D0D0D] tracking-wider text-center leading-tight mt-0.5">CUSTOMER<br/>RATING</div>
             </div>
           </div>
         </motion.div>
