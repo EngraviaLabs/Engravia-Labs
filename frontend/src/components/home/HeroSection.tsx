@@ -43,23 +43,23 @@ export default function HeroSection({ banner }: { banner?: any }) {
 
         {/* Right — Laser Engraving Artwork Image */}
         <motion.div className="flex items-center justify-center" initial={{opacity:0,scale:0.9}} animate={{opacity:1,scale:1}} transition={{duration:0.8,delay:0.2}}>
-          <div className="relative">
-            <div className="w-[360px] sm:w-[440px] h-[360px] sm:h-[440px] rounded-xl overflow-hidden border border-[rgba(212,175,55,0.3)] shadow-[0_30px_90px_rgba(0,0,0,0.9)] relative group">
+          <div className="relative max-w-full">
+            <div className="w-[280px] xs:w-[340px] sm:w-[440px] h-[280px] xs:h-[340px] sm:h-[440px] rounded-xl overflow-hidden border border-[rgba(212,175,55,0.3)] shadow-[0_30px_90px_rgba(0,0,0,0.9)] relative group">
               <img
                 src="/images/craft-legacy.jpg"
                 alt="Engravia Labs Precision Laser Engraving"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 text-left">
-                <span className="text-[10px] tracking-[3px] uppercase text-[#D4AF37] font-semibold block mb-1">Precision Laser Technology</span>
-                <h3 className="font-cinzel text-lg font-bold text-white leading-snug">Permanent Artistry in Stone & Metal</h3>
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-left">
+                <span className="text-[9px] sm:text-[10px] tracking-[2px] sm:tracking-[3px] uppercase text-[#D4AF37] font-semibold block mb-1">Precision Laser Technology</span>
+                <h3 className="font-cinzel text-base sm:text-lg font-bold text-white leading-snug">Permanent Artistry in Stone & Metal</h3>
               </div>
             </div>
             {/* Badge */}
-            <div className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full bg-[#D4AF37] flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(212,175,55,0.4)] z-20">
-              <div className="font-cinzel text-xl font-black text-[#0D0D0D]">4.9</div>
-              <div className="text-[8px] font-bold text-[#0D0D0D] tracking-wide text-center leading-tight">STAR<br/>RATING</div>
+            <div className="absolute right-2 bottom-2 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#D4AF37] flex flex-col items-center justify-center shadow-[0_8px_32px_rgba(212,175,55,0.4)] z-20">
+              <div className="font-cinzel text-base sm:text-xl font-black text-[#0D0D0D]">4.9</div>
+              <div className="text-[7px] sm:text-[8px] font-bold text-[#0D0D0D] tracking-wide text-center leading-tight">STAR<br/>RATING</div>
             </div>
           </div>
         </motion.div>
