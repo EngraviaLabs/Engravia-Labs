@@ -46,7 +46,7 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
     if (search) filter.$text = { $search: search as string };
     const skip = (+page - 1) * +limit;
     const [products, total] = await Promise.all([
-      Product.find(filter).populate('category','name slug').sort(sort as string).skip(skip).limit(+limit).select('-customizationFields -seo'),
+      Product.find(filter).populate('category','name slug').sort(sort as string).skip(skip).limit(+limit).select('-customizationFields -seo').lean(),
       Product.countDocuments(filter),
     ]);
     res.json({ success: true, products, pagination: getPaginationData(+page, +limit, total, products.length) });
@@ -57,7 +57,8 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
   try {
     const product = await Product.findOne({ slug: req.params.slug, isActive: true })
       .populate('category','name slug')
-      .populate('relatedProducts','name slug images price salePrice rating numReviews');
+      .populate('relatedProducts','name slug images price salePrice rating numReviews')
+      .lean();
     if (!product) return next(new AppError('Product not found.', 404));
     res.json({ success: true, product });
   } catch (e) { next(e); }
@@ -66,7 +67,7 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
 export const getFeaturedProducts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await Product.find({ isFeatured: true, isActive: true }).limit(8).sort('-createdAt')
-      .populate('category','name slug').select('name slug images price salePrice rating numReviews category isBestSeller');
+      .populate('category','name slug').select('name slug images price salePrice rating numReviews category isBestSeller').lean();
     res.json({ success: true, products });
   } catch (e) { next(e); }
 };
@@ -74,7 +75,7 @@ export const getFeaturedProducts = async (req: Request, res: Response, next: Nex
 export const getBestSellers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await Product.find({ isBestSeller: true, isActive: true }).limit(8).sort('-salesCount')
-      .populate('category','name slug').select('name slug images price salePrice rating numReviews category');
+      .populate('category','name slug').select('name slug images price salePrice rating numReviews category').lean();
     res.json({ success: true, products });
   } catch (e) { next(e); }
 };
@@ -82,7 +83,7 @@ export const getBestSellers = async (req: Request, res: Response, next: NextFunc
 export const getNewArrivals = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const products = await Product.find({ isActive: true }).limit(8).sort('-createdAt')
-      .populate('category','name slug').select('name slug images price salePrice rating numReviews category');
+      .populate('category','name slug').select('name slug images price salePrice rating numReviews category').lean();
     res.json({ success: true, products });
   } catch (e) { next(e); }
 };

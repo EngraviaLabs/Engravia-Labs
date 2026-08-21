@@ -7,14 +7,14 @@ import slugify from '../utils/slugify';
 export const getCategories = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const categories = await Category.find({ isVisible: true })
-      .sort('displayOrder').populate('parent', 'name slug');
+      .sort('displayOrder').populate('parent', 'name slug').lean();
     res.json({ success: true, categories });
   } catch (e) { next(e); }
 };
 
 export const getCategoryBySlug = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug, isVisible: true });
+    const category = await Category.findOne({ slug: req.params.slug, isVisible: true }).lean();
     if (!category) return next(new AppError('Category not found.', 404));
     res.json({ success: true, category });
   } catch (e) { next(e); }
@@ -22,7 +22,7 @@ export const getCategoryBySlug = async (req: Request, res: Response, next: NextF
 
 export const getAllCategoriesAdmin = async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const categories = await Category.find().sort('displayOrder').populate('parent', 'name slug');
+    const categories = await Category.find().sort('displayOrder').populate('parent', 'name slug').lean();
     res.json({ success: true, categories });
   } catch (e) { next(e); }
 };

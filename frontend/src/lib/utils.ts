@@ -9,6 +9,9 @@ export function getImageUrl(url?: string): string {
       const backendBase = apiUrl.replace(/\/api\/?$/, '');
       return `${backendBase}${cleanPath}`;
     }
+    if (url.includes('res.cloudinary.com') && url.includes('/upload/') && !url.includes('f_auto')) {
+      return url.replace('/upload/', '/upload/f_auto,q_auto/');
+    }
     return url;
   }
 
