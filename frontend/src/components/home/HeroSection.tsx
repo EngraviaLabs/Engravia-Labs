@@ -3,8 +3,35 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function HeroSection({ banner }: { banner?: any }) {
-  const title = banner?.title || 'Craft Your Legacy\nIn Black Marble';
-  const subtitle = banner?.subtitle || "Bespoke stone engravings that command respect, define spaces, and endure centuries. Handcrafted in Rajasthan's finest studios.";
+  const defaultTitle = 'Craft your legacy in\nStone, Metal & Wood';
+  const defaultSubtitle = "Crafted in Stone & Metal. Designed to Endure.\nBespoke engravings created with precision, craftsmanship, and an uncompromising eye for detail.";
+
+  const titleText = banner?.title || defaultTitle;
+  const subtitleText = banner?.subtitle || defaultSubtitle;
+
+  const renderTitle = () => {
+    if (titleText.includes('\n')) {
+      const [l1, l2] = titleText.split('\n');
+      return (
+        <>
+          {l1}
+          <br />
+          <span className="text-[#D4AF37]">{l2}</span>
+        </>
+      );
+    }
+    if (titleText.includes('Stone, Metal & Wood')) {
+      const parts = titleText.split('Stone, Metal & Wood');
+      return (
+        <>
+          {parts[0]}
+          <span className="text-[#D4AF37]">Stone, Metal & Wood</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return titleText;
+  };
 
   return (
     <section className="relative min-h-screen flex items-center bg-[#0D0D0D] overflow-hidden w-full max-w-full">
@@ -23,9 +50,9 @@ export default function HeroSection({ banner }: { banner?: any }) {
             <span className="block w-6 sm:w-10 h-px bg-[#D4AF37] shrink-0" />
           </div>
           <h1 className="font-cinzel text-3xl xs:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] text-white mb-6 whitespace-pre-line break-words max-w-full">
-            {title.split('\n')[0]}<br />{title.split('\n')[1]?.split(' ').map((w: string, i: number) => i === (title.split('\n')[1].split(' ').length-1) ? <span key={i} className="text-[#D4AF37]"> {w}</span> : (i===0?w:' '+w))}
+            {renderTitle()}
           </h1>
-          <p className="text-sm sm:text-[15px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-8 sm:mb-10 max-w-[480px]">{subtitle}</p>
+          <p className="text-sm sm:text-[15px] text-[rgba(255,255,255,0.6)] leading-relaxed mb-8 sm:mb-10 max-w-[480px] whitespace-pre-line">{subtitleText}</p>
           <div className="flex flex-row items-center gap-2 sm:gap-4 mb-10 sm:mb-14 relative z-20 w-full max-w-full">
             <Link href={banner?.ctaLink || "/collection"} className="btn-luxury flex-1 text-center px-2 sm:px-8 py-3.5 text-xs tracking-normal xs:tracking-wider sm:tracking-[2px] whitespace-nowrap cursor-pointer">
               {banner?.ctaText || "Shop Collection"}

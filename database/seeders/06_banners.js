@@ -28,9 +28,9 @@ const seedBanners = async () => {
 
   const banners = await Banner.insertMany([
     {
-      title: 'Craft Your Legacy\nIn Black Marble',
+      title: 'Craft your legacy in\nStone, Metal & Wood',
       subtitle: "India's Premier Stone Engraving Studio",
-      description: 'Bespoke stone engravings that command respect, define spaces, and endure centuries. Handcrafted in Rajasthan\'s finest studios.',
+      description: 'Crafted in Stone & Metal. Designed to Endure.\nBespoke engravings created with precision, craftsmanship, and an uncompromising eye for detail.',
       image: {
         url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80',
         publicId: 'engravia-labs/banners/hero-main',
